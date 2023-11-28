@@ -1,0 +1,45 @@
+[workspace]
+members = [
+  "api/.url",
+  "api",
+  "lib/t3",
+  "lib/tp",
+  "lib/client",
+  "lib/exepid",
+  "lib/sk",
+  "lib/xkv",
+  "lib/trt",
+  "lib/mark",
+  "lib/lang",
+  "lib/gid",
+  "lib/user",
+  "lib/util",
+  "lib/r",
+  "lib/smtp",
+  "lib/passwd",
+  "lib/kfn",
+  "lib/g",
+  "lib/m",
+  "lib/ip",
+  "lib/time",
+  "lib/xhash",
+  "lib/ua",
+  "lib/mysql_macro",
+]
+resolver = "2"
+
+[profile.release]
+lto = true
+opt-level = 3
+incremental = true
+codegen-units = 1
+overflow-checks = false
+panic = 'abort'
+debug-assertions = false
+strip = true
+
+# 如何将 Rust 的编译效率提高 75% https://mp.weixin.qq.com/s/JsBTEiCh-pW7M6kTt_KOUQ
+[profile.dev]
+opt-level = 1
+# [profile.dev.package."*"]
+# opt-level = 3

@@ -1,0 +1,11 @@
+[package]
+name = "sk"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+ctor = "0.2.5"
+trt = "0.1.15"
+util = { path = "../util" }
+r = { path = "../r" }

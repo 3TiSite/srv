@@ -1,0 +1,25 @@
+name: docker dev
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'docker/dev/*'
+      - '.github/workflows/dev.yml'
+jobs:
+  zh:
+    uses: ./.github/workflows/docker.yml
+    with:
+      name: dev
+      sh: ./gen.sh zh
+      suffix: zh
+    secrets: inherit
+
+  en:
+    uses: ./.github/workflows/docker.yml
+    with:
+      name: dev
+      sh: ./gen.sh en
+      suffix: zh
+    secrets: inherit

@@ -1,0 +1,7 @@
+*.log
+pnpm-lock.yaml
+target/
+/dev/mnt/
+node_modules/
+*.lock
+

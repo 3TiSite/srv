@@ -1,0 +1,17 @@
+name: docker mariadb
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'docker/mariadb/*'
+      - '.github/workflows/mariadb.yml'
+jobs:
+  build:
+    uses: ./.github/workflows/docker.yml
+    with:
+      name: mariadb
+    secrets: inherit
+
+
