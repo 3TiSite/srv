@@ -1,2 +1,2 @@
 #!/usr/bin/bash
-exec /usr/local/bin/bat -pp ${@:1:$#}
+exec /usr/bin/batcat -pp ${@:1:$#}

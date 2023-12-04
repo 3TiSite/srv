@@ -1,3 +1,12 @@
-yarn 
-pnpm 
 @antfu/ni
+@prettier/plugin-pug
+coffeescript
+diff-so-fancy
+neovim
+node-pre-gyp
+npm-check-updates
+pnpm
+prettier
+prettier-plugin-toml
+stylus-supremacy
+yarn

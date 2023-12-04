@@ -11,6 +11,7 @@ use axum::{
   Extension,
 };
 use t3::middleware;
+pub use user;
 use user::{client_by_token, client_user_cookie, cookie_set, ClientUser};
 use xtld::url_tld;
 

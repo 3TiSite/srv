@@ -12,11 +12,10 @@ let g:python_host_prog = trim(system('which python'))
 source /etc/vim/plug.vim
 
 call plug#begin('/etc/vim/plug')
+Plug 'Exafunction/codeium.vim'
 Plug 'yegappan/mru'        " 最近打开过的文件
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'TheZoq2/neovim-auto-autoread'
-Plug 'neoclide/coc-vetur'
-Plug 'neoclide/coc-tabnine'
 Plug 'jacoborus/tender.vim' " A 24bit colorscheme for Vim, Airline and Lightline
 Plug 'tomtom/tcomment_vim' " 批量注释
 Plug 'ziglang/zig.vim'
@@ -77,6 +76,7 @@ let g:ale_linters = {
 \}
 
 let b:ale_fixers = {
+\ '*': ['remove_trailing_lines', 'trim_whitespace'],
 \  'python':['ruff']
 \}
 
@@ -131,7 +131,7 @@ set nocompatible
 set mouse=
 if exists('+termguicolors')
   set termguicolors
-  try 
+  try
   colorscheme tender
   catch
   endtry
@@ -406,7 +406,7 @@ nmap cp :!pbcopy < %<cr>
 
 "autocmd BufWritePre *.py :%s/^\(\s*print\)\s\+\(.*\)/\1(\2)/e
 autocmd BufWritePre *.{lua,mdt,md,svelte,vue,ls,cpp,c,d,rs,slm,coffee,conf,html,sh,scss,css,xsh,styl} :%s/\t/  /ge
-autocmd BufWritePre *.{nt,yml,md,,mdt,lua,toml,svelte,zsh,txt,cpp,c,d,rs,slm,coffee,conf,html,sh,scss,css,vue,sass,xsh,styl} :%s/\s\+$//e
+" autocmd BufWritePre *.{nt,yml,md,,mdt,lua,toml,svelte,zsh,txt,cpp,c,d,rs,slm,coffee,conf,html,sh,scss,css,vue,sass,xsh,styl} :%s/\s\+$//e
 autocmd FileType vue syntax sync fromstart
 autocmd BufWritePre *.vue :syntax sync fromstart
 
@@ -417,7 +417,7 @@ autocmd BufWritePost *.{md,mdt} :redraw!
 
 " au BufWritePost *.{lua} :Autoformat
 au BufWritePre *.{lua,sh,h,cpp,c,v,proto,json,go,html,scss,css,dart,toml,rs,pug,py} :Autoformat
-autocmd BufWritePost *.{js,mjs} :silent! !rome format --write %
+autocmd BufWritePost *.{js,mjs} :silent! !bun x @biomejs/biome format --write %
 autocmd BufWritePost *.{js,mjs} :edit
 autocmd BufWritePost *.{js,mjs} :redraw!
 

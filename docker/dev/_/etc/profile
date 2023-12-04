@@ -11,7 +11,9 @@ export PAGER=bat
 export PNPM_HOME="/opt/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 
-/etc/run_dir.sh /etc/profile.d
+set -o allexport
+. /etc/run_dir.sh /etc/profile.d
+set +o allexport
 
 export RTX_DATA_DIR=/opt/rtx
 export RTX_CACHE_DIR=/cache/rtx

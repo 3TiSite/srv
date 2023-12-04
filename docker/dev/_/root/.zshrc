@@ -2,7 +2,6 @@
 
 setopt +o nomatch
 
-
 [ -z "$PS1" ] && return
 
 . ~/.zinit.zsh

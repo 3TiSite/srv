@@ -23,3 +23,4 @@ xhash = { version = "0.1.0", path = "../xhash" }
 ip = { path = "../ip", features = ["http"] }
 ua = { path = "../ua" }
 trt = { version = "0.1.15", path = "../trt" }
+sonic-rs = "0.2.4"

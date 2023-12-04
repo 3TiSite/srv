@@ -9,6 +9,7 @@ cd $DIR
 set -ex
 
 os=${1:-'en'}
+rm -f Dockerfile
 cp build/$os/Dockerfile Dockerfile
 cat build/Dockerfile >>Dockerfile
 

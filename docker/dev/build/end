@@ -1,6 +1,11 @@
-RUN rm -rf /root
-
 #FROM ubuntu
 #COPY --from=build / /
+
+RUN <<ETO
+#!/usr/bin/zsh
+set -ex
+mkdir -p /init
+mv /root /init
+ETO
 
 CMD ["/etc/rc.local"]

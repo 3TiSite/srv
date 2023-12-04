@@ -182,14 +182,18 @@ if r.length
     p = firstUpperCase(name)
     if ~p
       prefix = name.slice(0,p)
-      m = mod.get(prefix)
-      if m
-        gen kind,name,sql
-        write(
-          join MOD, m, kind, name.slice(p)+'.sql'
-          sql
-        )
-        continue
+      dump_name = name.slice(p)
+    else
+      prefix = dump_name = name
+
+    m = mod.get(prefix)
+    if m
+      gen kind,name,sql
+      write(
+        join MOD, m, kind, dump_name+'.sql'
+        sql
+      )
+      continue
     gen kind,name,sql
     write(
       join(DUMP_DIR, kind, name+'.sql')
@@ -319,7 +323,7 @@ $crate::#{fn}(#{mli.map((i)=>'$'+i).join(',')}).await?
   write(
     join ROOT, 'rust/lib/m/src/lib.rs'
     """
-#[allow(non_snake_case)]
+#[allow(non_snake_case,clippy::too_many_arguments)]
 mod r#fn {
   #{rust}
 }

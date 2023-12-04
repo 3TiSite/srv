@@ -48,12 +48,10 @@ return_type = (code)=>
   p = code.lastIndexOf('api::')
   if ~p
     p += 5
-    end = code.indexOf('{',p)
-    if end < 0
-      end = code.indexOf('\n',p)
-      if end < 0
-        end = code.indexOf(',',p)
-    return code.slice(p,end).trim()
+    code = code.slice(p)
+    for i, end in code
+      if '>{ \n,='.includes i
+        return code.slice(0,end).trim()
   '()'
 
 hasCaptcha = (code)=>
@@ -71,14 +69,15 @@ args_body = (def, code)=>
     if ~end
       code = code.slice(begin,end)
       for s from [
-        't3::Result<impl Into<t3::Msg>>'
-        'impl IntoResponse'
+        't3::Result<'
       ]
         s = '-> '+s
         p = code.indexOf(s)
         if ~p
           args = code.slice(0,p)
+          args = args.slice(0,args.lastIndexOf(')'))
           body = code.slice(p+s.length)
+          body = body.slice(body.indexOf('{')+1)
           return [args, body]
   return
 
@@ -87,8 +86,7 @@ api = (url, code)=>
   r = args_body('post', code)
   if r
     [args, body] = r
-    p = args.lastIndexOf(')')
-    args = args.slice(0,p).replaceAll('\n',' ').replace(/\s+/g,' ').trim().replace(/,$/,'')
+    args = args.replaceAll('\n',' ').replace(/\s+/g,' ').trim().replace(/,$/,'')
     rt = return_type(body)
     has_captcha = hasCaptcha(body)
     tip = "#{url}(#{args}) -> #{rt}"
@@ -119,7 +117,7 @@ api = (url, code)=>
       get = args
     else
       get = 0
-  if post_args != undefined or get != undefined
+  if (post_args != undefined) or get != undefined
     return [post_args, get]
   return
 
@@ -151,6 +149,25 @@ macro_rules! urlmod {
   )
   return
 
+out_mod_li = (out)=>
+  r = []
+  t = []
+  mod = ''
+  for i from out.split('\n')
+    t.push i
+    if i == '}'
+      r.push [mod, t]
+      t = []
+      mod = ''
+    else if i.startsWith('mod ') or i.startsWith('pub mod ')
+      if i.endsWith('}')
+        t.pop()
+        continue
+      i = i.slice(0,i.lastIndexOf('{')-1).trimEnd()
+      mod = i.slice(i.lastIndexOf(' ')+1)
+
+  return r
+
 export default main = (dir)=>
   await rmTarget(dir)
   mod_rs(dir)
@@ -159,8 +176,6 @@ export default main = (dir)=>
   $.verbose = false
   out = await $"cargo expand --theme=none"
   $.verbose = true
-  out = '\n'+out.stdout
-  out = out.split(/\bmod\s/)
 
   import_li = []
   api_nt = {}
@@ -182,21 +197,15 @@ export default main = (dir)=>
           map_li[p](url, i)
     return !!r
 
-  for li from out
-    li = li.split '\n'
-    if li[0].endsWith '{'
-      realm = mod = li[0].slice(0,-2).trim()
-      li = li.slice(1)
-      if mod == base
-        mod = ''
-      else
-        mod = Camel mod
-      url = base + mod
+  for [mod, li] from out_mod_li out.stdout
+    realm = mod
+    if mod == base
+      mod = ''
     else
-      url = mod
+      mod = Camel mod
+    url = base + mod
     end = '\n}'
     li =  li.join('\n').split(end)
-
     if merge(url,  li.shift()+end)
       if realm
         import_li.push realm+' as '+url
@@ -208,6 +217,7 @@ export default main = (dir)=>
       if i
         if merge(base, i+end)
           import_li.push 'self as '+base
+
   write(
     join dir, 'api.nt'
     '# GEN BY url.coffee . DON\'T EDIT !\n'+dumps(
@@ -237,4 +247,3 @@ if process.argv[1] == decodeURI (new URL(import.meta.url)).pathname
       if existsSync join dir,i,'Cargo.toml'
         await main join(dir,i)
   process.exit()
-

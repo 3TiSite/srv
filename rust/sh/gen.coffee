@@ -41,6 +41,7 @@ GET_PATH_LI = []
 IMPORT = []
 
 gen = (name)=>
+  EXIST_MOD.add name
   dir = join DIR_MOD, name
   cargo = join dir, 'Cargo.toml'
   if not existsSync cargo

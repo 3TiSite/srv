@@ -8,4 +8,4 @@ repository = "https://github.com/3TiSite/srv.git"
 description = "wrap gxhash for easy use"
 
 [dependencies]
-gxhash = "2.2.4"
+gxhash = "2.2.5"

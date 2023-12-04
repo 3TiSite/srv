@@ -1,17 +1,25 @@
 #![feature(let_chains)]
+
+mod user;
+pub use user::User;
+#[allow(non_snake_case)]
+pub mod K;
+mod by_id;
+mod cookie_set;
+pub mod lang;
+pub use by_id::{by_id, by_id_bin};
+mod pipeline;
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering::Relaxed};
 
-use const_str::concat;
-use kfn::kfn;
-use time::sec;
-use ua::Ua;
-mod cookie_set;
 use anyhow::Result;
+use const_str::concat;
 use cookie::Cookie;
 pub use cookie_set::cookie_set;
 use cookie_set::{day10, BASE};
 use gid::gid;
 use intbin::{bin_u64, u64_bin};
+use kfn::kfn;
+pub use pipeline::pipeline;
 use r::{
   fred::{
     interfaces::{FunctionInterface, KeysInterface, RedisResult, SortedSetsInterface},
@@ -20,6 +28,8 @@ use r::{
   KV,
 };
 use sk::sk;
+use time::sec;
+use ua::Ua;
 use ub64::bin_u64_li;
 use xhash::hash64;
 
@@ -225,7 +235,7 @@ impl ClientUser {
 
   pub async fn is_login_bin(&self, uid_bin: &[u8]) -> RedisResult<bool> {
     let key = client_uid(&self.bin());
-    let r: Option<u64> = KV.zscore(key, uid_bin).await?;
+    let r: Option<i64> = KV.zscore(key, uid_bin).await?;
     Ok(if let Some(s) = r { s > 0 } else { false })
   }
   pub async fn is_login(&self, uid: u64) -> RedisResult<bool> {

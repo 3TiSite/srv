@@ -3,6 +3,7 @@ use std::env::var;
 
 use lazy_static::lazy_static;
 pub use mysql_async::{
+  self,
   prelude::{Query, Queryable, WithParams},
   Error, Params, Result,
 };
@@ -23,24 +24,24 @@ lazy_static! {
       );
 
     macro_rules! opt {
-        ($opt:ident : $($str:ident $fn:ident);*) => {{
-            $(let $opt = opt!($opt, $str, $fn);)+
-                $opt
-        }};
-        ($opt:ident, $str:ident, $fn:ident) => {
-            if let Ok(o) = var(stringify!($str)) {
-                $opt.$fn(Some(o))
-            } else {
-                $opt
-            }
-        };
-    }
+            ($opt:ident : $($str:ident $fn:ident);*) => {{
+                $(let $opt = opt!($opt, $str, $fn);)+
+                    $opt
+            }};
+            ($opt:ident, $str:ident, $fn:ident) => {
+                if let Ok(o) = var(stringify!($str)) {
+                    $opt.$fn(Some(o))
+                } else {
+                    $opt
+                }
+            };
+        }
 
     opt!(
-    opt:
-    DB_USER user;
-    DB_DB db_name;
-    DB_PASSWORD pass
+        opt:
+        DB_USER user;
+        DB_DB db_name;
+        DB_PASSWORD pass
     )
   });
 }
@@ -50,37 +51,37 @@ macro_rules! conn {
     ()=>{
         $crate::POOL.get_conn().await?
     };
-    ($conn:ident $func:ident $sql:expr, $($arg:expr),+) => {{
+    ($conn:expr;$func:ident $sql:expr, $($arg:expr),+) => {{
         use $crate::{Query, WithParams};
         $sql.with(
             $crate::Params::Positional(vec![$($arg.into()),+])
         ).$func($conn).await?
     }};
-    ($conn:ident $func:ident $sql:expr) => {{
+    ($conn:expr; $func:ident $sql:expr) => {{
         use $crate::{Query};
-        $sql.$func(&mut $conn).await?
+        $sql.$func($conn).await?
     }};
     ($func:ident $sql:expr $(,$arg:expr)* $(,)?) => {{
 #[allow(unused_mut)]
-let mut conn = $crate::conn!();
-$crate::conn!(conn $func $sql $(,$arg)*)
+        let mut conn = $crate::conn!();
+        $crate::conn!(&mut conn; $func $sql $(,$arg)*)
     }};
 }
 
 macro_rules! def {
     ($($m:ident $func:ident;)+) => {
-       $(def!($m $func);)+
+        $(def!($m $func);)+
     };
     ($m:ident $func:ident) => {
 #[macro_export]
-macro_rules! $m {
-    ($conn:ident $sql:expr $$(,$arg:expr)* $$(,)?) => {
-        $$crate::conn!($$conn $func $$sql $$(,$$arg)*)
-    };
-    ($sql:expr $$(,$arg:expr)* $$(,)?) => {
-        $$crate::conn!($func $$sql $$(,$$arg)*)
-    };
-}
+        macro_rules! $m {
+            ($conn:expr; $sql:expr $$(,$arg:expr)* $$(,)?) => {
+                $$crate::conn!($$conn; $func $$sql $$(,$$arg)*)
+            };
+            ($sql:expr $$(,$arg:expr)* $$(,)?) => {
+                $$crate::conn!($func $$sql $$(,$$arg)*)
+            };
+        }
     };
 }
 
@@ -92,20 +93,20 @@ def!(
 
 #[macro_export]
 macro_rules! bg {
-($sql:expr $(,$arg:expr)* $(,)?) => {{
-    $crate::spawn!(async move {
-        $crate::exe!($sql $(,$arg)*);
-        Ok::<_,$crate::Error>(())
-    });
-}};
+    ($sql:expr $(,$arg:expr)* $(,)?) => {{
+        $crate::spawn!(async move {
+            $crate::exe!($sql $(,$arg)*);
+            Ok::<_,$crate::Error>(())
+        });
+    }};
 }
 
 #[macro_export]
 macro_rules! q1 {
-    ($conn:ident $sql:expr $(,$arg:expr)* $(,)?) => {
-        $crate::q01!($conn $sql $(,$arg)*).unwrap()
+    ($conn:expr; $sql:expr $(,$arg:expr)* $(,)?) => {
+        $crate::q01!($conn;$sql $(,$arg)*).unwrap()
     };
     ($sql:expr $(,$arg:expr)* $(,)?) => {
         $crate::q01!($sql $(,$arg)*).unwrap()
     };
-  }
+}
