@@ -2,10 +2,10 @@
 
 > path > join resolve basename dirname
   chalk
-  fs > existsSync readdirSync
+  fs > existsSync readdirSync statSync
   @3-/uridir
   zx/globals:
-  @3-/dbq
+  @3-/dbq > $e
   @3-/read
   @3-/walk
   @3-/nt/load.js
@@ -18,7 +18,7 @@ ROOT = resolve(
 )
 
 {
-  DB_DB
+  DB_NAME
   DB_HOST
   DB_PASSWORD
   DB_PORT
@@ -36,7 +36,7 @@ scan = (dir)=>
     dirli.unshift table
   for subdir from dirli
     ndir = join(dir,subdir)
-    if ndir.includes '.'
+    if statSync(ndir).isFile()
       continue
     for await i from walk ndir
       if i.endsWith '.sql'
@@ -52,10 +52,10 @@ scan = (dir)=>
           li = sql.split(';\n').filter((i)=>i.length).map((i)=>i+';')
         for i from li
           console.log gray(i)
-          await dbq(i)
+          await $e(i)
   init_sql = join dir,'init.sql'
   if existsSync init_sql
-     await $"MYSQL_PWD=#{DB_PASSWORD} mysql -h #{DB_HOST} -P#{DB_PORT} -u #{DB_USER} #{DB_DB} < #{init_sql}"
+     await $"MYSQL_PWD=#{DB_PASSWORD} mysql -h #{DB_HOST} -P#{DB_PORT} -u #{DB_USER} #{DB_NAME} < #{init_sql}"
   return
 
 await scan join ROOT,'db'

@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-sd "$@" $(fd --type file --hidden --exclude .git)
+fd --type file --hidden --exclude .git -x sd "$1" "$2" "{}"

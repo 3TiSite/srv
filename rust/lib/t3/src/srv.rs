@@ -4,10 +4,12 @@ use axum::{error_handling::HandleErrorLayer, http::StatusCode, BoxError, Router}
 use coarsetime::Duration;
 use tower::ServiceBuilder;
 
+genv::def!(PORT:u16|8850);
+
 const TIMEOUT: u64 = 600;
 
-pub async fn srv(router: Router, default_port: u16) -> u16 {
-  let port = envport::get("PORT", default_port);
+pub async fn srv(router: Router) -> u16 {
+  let port = PORT();
   let addr = SocketAddr::from(([0, 0, 0, 0], port));
 
   // https://github.com/tokio-rs/axum/discussions/1383

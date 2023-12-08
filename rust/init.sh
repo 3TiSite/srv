@@ -5,7 +5,7 @@ cd $DIR
 set -ex
 
 ../ops/backup/db/load.coffee
-
+../ops/backup/db/dump.sh
 APT_URL=api/.url
 
 ensure() {
@@ -17,14 +17,6 @@ ensure() {
 }
 
 ensure cargo-expand
-
-if [ ! -f "url.nt" ]; then
-  if [ -f "../../conf/srv/rust/url.nt" ]; then
-    ln -s ../../conf/srv/rust/url.nt .
-  else
-    cp example.url.nt url.nt
-  fi
-fi
 
 run() {
   for i in $@; do

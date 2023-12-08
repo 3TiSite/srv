@@ -28,7 +28,7 @@ use r::{
   KV,
 };
 use sk::sk;
-use time::sec;
+use sts::sec;
 use ua::Ua;
 use ub64::bin_u64_li;
 use xhash::hash64;

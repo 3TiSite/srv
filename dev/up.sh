@@ -2,7 +2,7 @@
 
 DIR=$(realpath $0) && DIR=${DIR%/*}
 cd $DIR
-set -e
+set -ex
 
 ./gen.coffee
 direnv exec . docker-compose up -d
@@ -10,7 +10,7 @@ direnv exec . docker-compose up -d
 p=""
 while true; do
   docker-compose exec db true || (echo -e '\nERROR on start db\n' && docker-compose logs -n20 db && exit 1)
-  echo "select 1;" | MYSQL_PWD=$DB_PASSWORD mysql -h 127.1 -P$DB_PORT -u $DB_USER $DB_DB >/dev/null 2>&1 && break || true
+  echo "select 1;" | MYSQL_PWD=$DB_PASSWORD mysql -h 127.1 -P$DB_PORT -u $DB_USER $DB_NAME >/dev/null 2>&1 && break || true
   s=$(docker-compose logs db -n1)
   if [ "$p" != "$s" ]; then
     echo -e "\n$s"

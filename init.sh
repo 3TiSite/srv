@@ -33,3 +33,4 @@ cd $DIR/dev
 run up
 cd $DIR/rust
 run init
+direnv exec . ./sh/cron.coffee

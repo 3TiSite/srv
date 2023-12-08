@@ -1,8 +1,7 @@
 pub use anyhow;
-pub use ctor;
 pub use paste::paste;
 pub use r;
-pub use time::nanos;
+pub use sts::nano;
 pub use tokio;
 pub use trt;
 
@@ -45,8 +44,8 @@ macro_rules! gid {
         ($id:ident) => {{
           use std::cmp::min;
 
-          use $crate::{nanos, r::fred::interfaces::HashesInterface};
-          let now = nanos();
+          use $crate::{nano, r::fred::interfaces::HashesInterface};
+          let now = nano();
           if $id.time > 0 {
             let diff = (now - $id.time);
             if $crate::FETCH_DURATION > diff {
@@ -87,8 +86,8 @@ macro_rules! gid {
       }
     }
 
-    #[$crate::ctor::ctor]
-    fn init() {
+    #[static_init::constructor(0)]
+    extern "C" fn init() {
       $key::init().unwrap();
     }
 

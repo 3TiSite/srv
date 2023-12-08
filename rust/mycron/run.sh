@@ -4,4 +4,4 @@ DIR=$(realpath $0) && DIR=${DIR%/*}
 cd $DIR
 set -ex
 
-cargo build
+exec cargo run -- $(dirname $(dirname $DIR))/mod

@@ -55,14 +55,7 @@ async fn main() -> anyhow::Result<()> {
 }
 
   route!();
-  let default_port = 8850;
-  let port = match std::env::var("API_PORT") {
-    Ok(val) => val.parse::<u16>().unwrap_or(default_port),
-    _ => default_port,
-  };
 
-  // t3::srv(router, port).await;
-
-  t3::srv(router.layer(middleware::from_fn(client)), port).await;
+  t3::srv(router.layer(middleware::from_fn(client))).await;
   Ok(())
 }

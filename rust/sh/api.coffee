@@ -24,10 +24,14 @@ json_args = (code)=>
     t = code.slice(0, begin)
     begin = t.lastIndexOf('let ')
     if ~begin
-      begin += 5
+      begin += 4
+      t = t.slice(begin)
+      begin = t.indexOf('(')
+      if ~begin
+        t = t.slice(begin+1).trimStart()
       end = t.lastIndexOf(')')
       if ~end
-        t = t.slice(begin,end)
+        t = t.slice(0,end)
         [name, type] = t.split(':')
         name = name.trim().replace(/\s*\)$/,'')
         name = removeEnd(name).split(',').map((i)=>i.trim())
@@ -38,14 +42,23 @@ json_args = (code)=>
       else
         end = t.lastIndexOf('=')
         if ~end
-          [name, type] = t.slice(begin,end).split(':')
+          [name, type] = t.slice(0,end).split(':')
           args.push [name.trim(), type.trim()]
 
   # post_args = []
   return args
 
 return_type = (code)=>
-  p = code.lastIndexOf('api::')
+  p = code.indexOf('Ok(api::')
+  if p<0
+    p = code.indexOf('ok!(api::')
+    if p < 0
+      p = code.indexOf('api::')
+    else
+      p += 4
+  else
+    p += 3
+
   if ~p
     p += 5
     code = code.slice(p)
@@ -69,6 +82,7 @@ args_body = (def, code)=>
     if ~end
       code = code.slice(begin,end)
       for s from [
+        '::aerr::Result<'
         't3::Result<'
       ]
         s = '-> '+s

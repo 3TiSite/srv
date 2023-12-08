@@ -2,13 +2,11 @@ use std::{collections::BTreeMap, env, ops::Deref, str::FromStr};
 
 use anyhow::Result;
 pub use async_lazy::Lazy;
-pub use ctor::ctor;
 pub use fred::{
   self,
   interfaces::ClientLike,
   prelude::{ReconnectPolicy, RedisClient, RedisConfig, ServerConfig},
 };
-pub use lazy_static::lazy_static;
 pub use paste::paste;
 pub use trt::TRT;
 pub struct Server {
@@ -59,11 +57,11 @@ macro_rules! conn {
             Box::pin(async move { $crate::conn(stringify!($prefix)).await.unwrap() })
         });
 
-        $crate::lazy_static! {
-            pub static ref $var:$crate::Wrap = $crate::Wrap(&[<__ $var>]);
-        }
-        #[$crate::ctor]
-        fn [<init_ $prefix:lower>]() {
+        #[static_init::dynamic]
+        pub static $var:$crate::Wrap = $crate::Wrap(&[<__ $var>]);
+
+        #[static_init::constructor(0)]
+        extern "C" fn [<init_ $prefix:lower>]() {
             $crate::TRT.block_on(async move {
                 use std::future::IntoFuture;
                 [<__ $var>].into_future().await;

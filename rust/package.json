@@ -17,6 +17,5 @@
     "ioredis": "^5.3.2",
     "toml-patch": "^0.2.3",
     "zx": "^7.2.3"
-  },
-  "devDependencies": {}
+  }
 }

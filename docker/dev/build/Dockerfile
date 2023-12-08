@@ -42,7 +42,7 @@ RUN <<ETO
 set -ex
 source $CARGO_HOME/env
 curl -L --proto '=https' -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-cargo binstall --no-confirm --root /usr/local stylua erdtree cargo-cache sd tokei diskus cargo-edit cargo-update rtx-cli wasm-bindgen-cli wasm-pack eza atuin watchexec-cli
+cargo binstall --no-confirm --root /usr/local stylua erdtree cargo-cache sd tokei diskus cargo-edit cargo-update rtx-cli wasm-bindgen-cli wasm-pack eza atuin watchexec-cli fd-find
 cargo install --root /usr/local --git https://github.com/3tifork/ripgrep.git
 
 eval $(rtx env)

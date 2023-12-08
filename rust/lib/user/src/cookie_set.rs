@@ -1,12 +1,11 @@
 use sk::sk;
-use time::sec;
 use xhash::hash64;
 
 /// 对 BASE 求余, 为了防止数字过大,
 pub const BASE: u64 = 1024;
 
 pub fn day10() -> u64 {
-  (sec() / (86400 * 10)) % BASE
+  (sts::sec() / (86400 * 10)) % BASE
 }
 
 pub fn cookie_set(host: &str, client_id: u64, client_ver: u64) -> [String; 2] {

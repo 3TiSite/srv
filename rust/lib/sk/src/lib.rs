@@ -8,8 +8,8 @@ pub fn sk() -> &'static [u8] {
   unsafe { &SK[..] }
 }
 
-#[ctor::ctor]
-fn init() {
+#[static_init::constructor(0)]
+extern "C" fn init() {
   TRT.block_on(async move {
     let redis = KV.0.force().await;
     let conf = &b"conf"[..];

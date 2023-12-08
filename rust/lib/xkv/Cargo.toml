@@ -11,11 +11,9 @@ description = "use fred connection redis via env"
 [dependencies]
 anyhow = "1.0.75"
 async-lazy = { version = "0.1.0", features = ["parking_lot", "nightly"] }
-ctor = "0.2.5"
 fred = { version = "7.0.0", features = ["replicas", "rustls", "sha-1"] }
-lazy_static = "1.4.0"
 paste = "1.0.14"
-trt = "0.1.15"
+trt = "0.1.16"
 
 [dev-dependencies]
 tokio-test = "0.4.3"

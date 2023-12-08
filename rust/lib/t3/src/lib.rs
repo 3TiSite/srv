@@ -2,6 +2,8 @@
 #![feature(type_alias_impl_trait)]
 #![feature(impl_trait_in_assoc_type)]
 
+pub use aerr::{err, form, msg, ok, Err, Error, FnAny, Msg, Result};
+
 pub mod origin;
 pub use origin::{origin, origin_tld};
 pub use tracing;
@@ -14,13 +16,8 @@ pub use axum::{
   Extension,
 };
 pub use tower_http;
-mod err;
-pub mod form;
 mod log;
-mod msg;
 mod srv;
-
-pub use msg::{FnAny, Msg};
 
 pub fn same<T>(t: T) -> T {
   t
@@ -35,7 +32,6 @@ macro_rules! api {
   };
 }
 
-pub use err::{err, Err, Error, Result};
 pub use log::init;
 pub use srv::srv;
 
@@ -50,16 +46,16 @@ pub fn ok() -> Response {
 
 #[macro_export]
 macro_rules! compression_layer {
-() => {{
-    use tower_http::compression::{
-        predicate::{NotForContentType, Predicate, SizeAbove},
-        CompressionLayer,
-    };
-    let predicate = SizeAbove::new(256)
-        // still don't compress gRPC
-        .and(NotForContentType::GRPC)
-        // still don't compress images
-        .and(NotForContentType::IMAGES);
-    CompressionLayer::new().compress_when(predicate)
-}};
+    () => {{
+        use tower_http::compression::{
+            predicate::{NotForContentType, Predicate, SizeAbove},
+            CompressionLayer,
+        };
+        let predicate = SizeAbove::new(256)
+            // still don't compress gRPC
+            .and(NotForContentType::GRPC)
+            // still don't compress images
+            .and(NotForContentType::IMAGES);
+        CompressionLayer::new().compress_when(predicate)
+    }};
 }

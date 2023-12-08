@@ -7,7 +7,7 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.75"
 t3 = { path = "../t3" }
-axum = "0.7.1"
+axum = "0.7.2"
 user = { path = "../user" }
 tracing = "0.1.40"
 thiserror = "1.0.50"

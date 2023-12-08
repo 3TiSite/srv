@@ -54,13 +54,13 @@ gen = (kind, name, sql)=>
   return
 
 {
-  DB_DB
+  DB_NAME
 } = process.env
 
 PWD = uridir(import.meta)
 ROOT = resolve PWD,'../../..'
 MOD = join ROOT, 'mod'
-DUMP_SQL = join PWD, DB_DB+'.sql'
+DUMP_SQL = join PWD, DB_NAME+'.sql'
 
 li = []
 sql = read(DUMP_SQL).replaceAll(

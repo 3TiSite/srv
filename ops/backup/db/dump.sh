@@ -12,6 +12,6 @@ mysqldump \
   --routines \
   --compatible=no_table_options \
   -u"$DB_USER" \
-  -P$DB_PORT -h$DB_HOST -d "$DB_DB" >$DB_DB.sql
+  -P$DB_PORT -h$DB_HOST -d "$DB_NAME" >$DB_NAME.sql
 # --column-statistics=0 \
 ./dump.coffee

@@ -1,7 +1,6 @@
 #![feature(macro_metavar_expr)]
-use std::env::var;
 
-use lazy_static::lazy_static;
+use genv::def;
 pub use mysql_async::{
   self,
   prelude::{Query, Queryable, WithParams},
@@ -12,39 +11,20 @@ pub use trt::spawn;
 
 pub const MYSQL_DEFAULT_PORT: u16 = 3306;
 
-lazy_static! {
-  pub static ref POOL: Pool = Pool::new({
-    let opt = OptsBuilder::default()
-      .compression(mysql_async::Compression::fast())
-      .ip_or_hostname(var("DB_HOST").unwrap_or("127.0.0.1".into()))
-      .tcp_port(
-        var("DB_PORT")
-          .map(|i| i.parse().unwrap_or(MYSQL_DEFAULT_PORT))
-          .unwrap_or(MYSQL_DEFAULT_PORT),
-      );
+def!(DB_HOST: String | "127.0.0.1".to_owned());
+def!(DB_PORT:u16 | MYSQL_DEFAULT_PORT);
+def!(DB_USER, DB_PASSWORD, DB_NAME);
 
-    macro_rules! opt {
-            ($opt:ident : $($str:ident $fn:ident);*) => {{
-                $(let $opt = opt!($opt, $str, $fn);)+
-                    $opt
-            }};
-            ($opt:ident, $str:ident, $fn:ident) => {
-                if let Ok(o) = var(stringify!($str)) {
-                    $opt.$fn(Some(o))
-                } else {
-                    $opt
-                }
-            };
-        }
-
-    opt!(
-        opt:
-        DB_USER user;
-        DB_DB db_name;
-        DB_PASSWORD pass
-    )
-  });
-}
+#[static_init::dynamic]
+pub static POOL: Pool = Pool::new({
+  OptsBuilder::default()
+    .compression(mysql_async::Compression::fast())
+    .ip_or_hostname(DB_HOST())
+    .tcp_port(DB_PORT())
+    .user(Some(DB_USER::<String>()))
+    .pass(Some(DB_PASSWORD::<String>()))
+    .db_name(Some(DB_NAME::<String>()))
+});
 
 #[macro_export]
 macro_rules! conn {

@@ -7,7 +7,7 @@
   crypto
 {
   DB_PASSWORD
-  DB_DB
+  DB_NAME
   DB_PORT
   DB_USER
   DB_HOST

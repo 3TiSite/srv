@@ -6,20 +6,20 @@
 
 {
   DB_PASSWORD
-  DB_DB
+  DB_NAME
   DB_USER
   DB_TENANT
 } = process.env
 
 sql = """
 ALTER USER root@'%' IDENTIFIED BY '#{DB_PASSWORD}';
-CREATE DATABASE IF NOT EXISTS #{DB_DB};
+CREATE DATABASE IF NOT EXISTS #{DB_NAME};
 """
 
 if DB_USER != "root"
   sql += """
 CREATE USER '#{DB_USER}'@'%' IDENTIFIED BY '#{DB_PASSWORD}';
-GRANT ALL PRIVILEGES ON #{DB_DB}.* TO '#{DB_USER}'@'%';
+GRANT ALL PRIVILEGES ON #{DB_NAME}.* TO '#{DB_USER}'@'%';
 """
 
 write(
