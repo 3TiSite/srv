@@ -6,6 +6,8 @@ pub use aerr::{err, form, msg, ok, Err, Error, FnAny, Msg, Result};
 
 pub mod origin;
 pub use origin::{origin, origin_tld};
+pub mod host;
+pub use host::{host, host_tld};
 pub use tracing;
 mod middleware;
 pub use axum::{
@@ -15,6 +17,7 @@ pub use axum::{
   response::IntoResponse,
   Extension,
 };
+pub use middleware::middleware;
 pub use tower_http;
 mod log;
 mod srv;

@@ -8,15 +8,10 @@ pub fn day10() -> u64 {
   (sts::sec() / (86400 * 10)) % BASE
 }
 
-pub fn cookie_set(host: &str, client_id: u64, client_ver: u64) -> [String; 2] {
+pub fn cookie_set(host: &str, client_id: u64) -> [String; 1] {
   let t = &vb::e([day10(), client_id])[..];
-  let v = intbin::u64_bin(client_ver);
-  let token = [&hash64(&[sk(), t, &v].concat()).to_le_bytes()[..], t].concat();
+  let token = [&hash64(&[sk(), t].concat()).to_le_bytes()[..], t].concat();
   let i = cookiestr::e(token);
-  let v = cookiestr::e(v);
-  let age = format!(";max-age=99999999;domain={host};path=/");
-  [
-    format!("I={i}{age};HttpOnly;SameSite=Lax;Secure"),
-    format!("V={v}{age}"),
-  ]
+  let age = format!(";max-age=99999999;domain={host};path=/;Partitioned;Secure;SameSite=None");
+  [format!("I={i}{age};HttpOnly")]
 }

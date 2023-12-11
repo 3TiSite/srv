@@ -1,13 +1,20 @@
-#[macro_export]
-macro_rules! middleware {
-  ($body:expr) => {{
-    let r: anyhow::Result<Response> = $body.await;
-    match r {
-      Ok(r) => r,
-      Err(err) => {
-        $crate::tracing::error!("{:?}", err);
-        (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()).into_response()
-      }
+// #[macro_export]
+// macro_rules! middleware {
+//   ($body:expr) => {{
+//   }};
+// }
+
+use axum::{
+  http::StatusCode,
+  response::{IntoResponse, Response},
+};
+
+pub fn middleware(r: anyhow::Result<Response>) -> Response {
+  match r {
+    Ok(r) => r,
+    Err(err) => {
+      tracing::error!("{:?}", err);
+      (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()).into_response()
     }
-  }};
+  }
 }

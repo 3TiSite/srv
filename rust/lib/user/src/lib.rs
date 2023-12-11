@@ -9,7 +9,7 @@ mod cookie_set;
 pub mod lang;
 pub use by_id::{by_id, by_id_bin};
 mod pipeline;
-use std::sync::atomic::{AtomicBool, AtomicU64, Ordering::Relaxed};
+use std::sync::atomic::{AtomicU64, Ordering::Relaxed};
 
 use anyhow::Result;
 use const_str::concat;
@@ -52,7 +52,6 @@ const ZSET_GT0_NOW: &str = "zsetGt0Now";
 #[derive(Debug)]
 pub struct ClientCookie {
   pub id: u64,
-  pub ver: u64, // 版本号，版本更新，就需要更新用户信息
 }
 
 #[derive(Debug)]
@@ -65,9 +64,7 @@ pub enum ClientState {
 #[derive(Debug, Default)]
 pub struct ClientUser {
   pub id: u64,
-  set: AtomicBool,
   _uid: AtomicU64,
-  _ver: AtomicU64,
 }
 
 pub const INSERT_UID_CLIENT_P: &str = "INSERT INTO authUidClient (uid,client,state) VALUES ";
@@ -91,7 +88,6 @@ impl ClientUser {
     let score = if sign_in { time as _ } else { -(time as f64) };
     p.zadd(client_uid(bin), None, None, false, false, (score, uid_bin))
       .await?;
-    self.ver_incr();
     Ok(())
   }
 
@@ -146,7 +142,6 @@ impl ClientUser {
   pub async fn set<C: FunctionInterface + Sync>(&self, p: &C, uid: &[u8]) -> RedisResult<()> {
     let bin = &self.bin()[..];
     p.fcall(ZSET_GT0_NOW, &[client_uid(bin)], &[uid]).await?;
-    self.ver_incr();
     Ok(())
   }
 
@@ -197,7 +192,6 @@ impl ClientUser {
 
       p.del(key).await?;
       p.all().await?;
-      self.ver_incr();
     }
     Ok(())
   }
@@ -205,7 +199,6 @@ impl ClientUser {
   pub async fn rm<C: SortedSetsInterface + Sync>(&self, p: &C, uid: &[u8]) -> RedisResult<()> {
     let bin = &self.bin()[..];
     p.zrem(client_uid(bin), &[uid]).await?;
-    self.ver_incr();
     Ok(())
   }
 
@@ -218,19 +211,6 @@ impl ClientUser {
     }
     self._uid.store(UID_STATE_UNSET, Relaxed);
     Ok(())
-  }
-
-  pub fn ver(&self) -> u64 {
-    self._ver.load(Relaxed)
-  }
-
-  pub fn do_set(&self) -> bool {
-    self.set.load(Relaxed)
-  }
-
-  pub fn ver_incr(&self) {
-    self._ver.fetch_add(1, Relaxed);
-    self.set.store(true, Relaxed);
   }
 
   pub async fn is_login_bin(&self, uid_bin: &[u8]) -> RedisResult<bool> {
@@ -249,26 +229,21 @@ fn client_by_cookie(cookie: Option<impl AsRef<str>>) -> ClientState {
       .flatten()
       .map(|i| (i.name().to_owned(), i.value().to_owned()))
       .collect();
-    if let Some(i) = map.get("I")
-      && let Some(v) = map.get("V")
-    {
-      return client_by_cookie_map(i, v);
+    if let Some(i) = map.get("I") {
+      return client_by_cookie_map(i);
     }
   }
   ClientState::None
 }
 
-fn client_by_cookie_map(token: &str, ver: &str) -> ClientState {
+fn client_by_cookie_map(token: &str) -> ClientState {
   if let Ok(c) = cookiestr::d(token)
-    && let Ok(v) = cookiestr::d(ver)
     && c.len() >= HASH_LEN
   {
     let client = &c[HASH_LEN..];
-    if hash64(&[sk(), client, &v].concat()) == u64::from_le_bytes(c[..HASH_LEN].try_into().unwrap())
-    {
+    if hash64(&[sk(), client].concat()) == u64::from_le_bytes(c[..HASH_LEN].try_into().unwrap()) {
       let li = bin_u64_li(client);
       if li.len() == 2 {
-        let ver = intbin::bin_u64(v);
         let [pre_day10, id]: [u64; 2] = li.try_into().unwrap();
 
         let now = day10();
@@ -276,14 +251,14 @@ fn client_by_cookie_map(token: &str, ver: &str) -> ClientState {
           if pre_day10 > now {
             // 当 now 超过 BASE 的时候，会从头开始，因为都是无符号类型，要避免减法出现负数
             if pre_day10 < BASE && (now + (BASE - pre_day10)) < MAX_INTERVAL {
-              return ClientState::Renew(ClientCookie { id, ver });
+              return ClientState::Renew(ClientCookie { id });
             }
           } else if (now - pre_day10) < MAX_INTERVAL {
             // renew
-            return ClientState::Renew(ClientCookie { id, ver });
+            return ClientState::Renew(ClientCookie { id });
           }
         } else {
-          return ClientState::Ok(ClientCookie { id, ver });
+          return ClientState::Ok(ClientCookie { id });
         }
       }
     }
@@ -300,38 +275,27 @@ pub async fn client_by_token(token: impl AsRef<str>) -> Result<ClientUser> {
   })
 }
 
-pub async fn client_user_cookie(cookie: Option<impl AsRef<str>>) -> Result<ClientUser> {
-  let mut client_id = 0;
-  let mut client_ver = 0;
-
-  match client_by_cookie(cookie) {
-    ClientState::Renew(c) => {
-      client_id = c.id;
-      client_ver = c.ver;
-    }
+pub async fn client_user_cookie(cookie: Option<impl AsRef<str>>) -> Result<(ClientUser, bool)> {
+  let (client_id, _uid) = match client_by_cookie(cookie) {
     ClientState::Ok(c) => {
-      return Ok(ClientUser {
-        id: c.id,
-        _uid: UID_STATE_UNSET.into(),
-        _ver: c.ver.into(),
-        ..Default::default()
-      });
+      return Ok((
+        ClientUser {
+          id: c.id,
+          _uid: UID_STATE_UNSET.into(),
+          ..Default::default()
+        },
+        false,
+      ));
     }
-    _ => {}
-  }
-
-  let _uid = if client_id == 0 {
-    client_id = gid_client().await?;
-    UID_STATE_NOUSER
-  } else {
-    UID_STATE_UNSET
+    ClientState::Renew(c) => (c.id, UID_STATE_UNSET),
+    ClientState::None => (gid_client().await?, UID_STATE_NOUSER),
   };
 
-  Ok(ClientUser {
-    id: client_id,
-    set: true.into(),
-    _ver: client_ver.into(),
-    _uid: _uid.into(),
-    // ..Default::default()
-  })
+  Ok((
+    ClientUser {
+      id: client_id,
+      _uid: _uid.into(),
+    },
+    true,
+  ))
 }

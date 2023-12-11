@@ -3,11 +3,11 @@ use std::{ops::Deref, sync::Arc};
 use axum::{
   extract::Request,
   http::{
-    header::{COOKIE, ORIGIN, SET_COOKIE},
+    header::{COOKIE, HOST, SET_COOKIE},
     StatusCode,
   },
   middleware::Next,
-  response::{IntoResponse, Response},
+  response::Response,
   Extension,
 };
 use t3::middleware;
@@ -27,34 +27,40 @@ fn header_get<B>(req: &Request<B>, key: impl AsRef<str>) -> Option<&str> {
     .and_then(|header| header.to_str().ok())
 }
 
-pub async fn client(mut req: Request, next: Next) -> Response {
-  middleware!(async move {
-    if let Some(i) = header_get(&req, "I") {
-      // api 请求
-      let client_user = client_by_token(i).await?;
-      req.extensions_mut().insert(_Client(client_user.into()));
-      return Ok(next.run(req).await);
-    }
-    if let Some(origin) = header_get(&req, ORIGIN) {
-      let origin = origin.to_owned();
-      let client_user = Arc::new(client_user_cookie(header_get(&req, COOKIE)).await?);
-      req.extensions_mut().insert(_Client(client_user.clone()));
+async fn _client(mut req: Request, next: Next) -> anyhow::Result<Response> {
+  if let Some(i) = header_get(&req, "I") {
+    // api 请求
+    let client_user = client_by_token(i).await?;
+    req.extensions_mut().insert(_Client(client_user.into()));
+    return Ok(next.run(req).await);
+  }
+  if let Some(host) = header_get(&req, HOST) {
+    let host = host.to_owned();
 
-      let mut r = next.run(req).await;
+    let (client_user, set_cookie) = client_user_cookie(header_get(&req, COOKIE)).await?;
 
-      if client_user.do_set() {
-        let host = url_tld(origin);
-        let cookie_li = cookie_set(&host, client_user.id, client_user.ver());
-        for i in cookie_li.into_iter() {
-          r.headers_mut().append(SET_COOKIE, i.parse()?);
-        }
+    let client_user = Arc::new(client_user);
+
+    req.extensions_mut().insert(_Client(client_user.clone()));
+
+    let mut r = next.run(req).await;
+
+    if set_cookie {
+      let host = url_tld(host);
+      let cookie_li = cookie_set(&host, client_user.id);
+      for i in cookie_li.into_iter() {
+        r.headers_mut().append(SET_COOKIE, i.parse()?);
       }
-
-      Ok(r)
-    } else {
-      Err(t3::origin::Error::HeaderMissOrigin.into())
     }
-  })
+
+    Ok(r)
+  } else {
+    Err(t3::host::Error::HeaderMissHost.into())
+  }
+}
+
+pub async fn client(req: Request, next: Next) -> Response {
+  middleware(_client(req, next).await)
 }
 
 #[macro_export]
