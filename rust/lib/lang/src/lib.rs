@@ -1,8 +1,9 @@
+mod code_id;
+
+pub use code_id::LANG;
 pub use const_str;
 pub use http::HeaderMap;
 pub use intbin::u8_bin;
-
-pub const LANG: phf::OrderedSet<&str> = phf::phf_ordered_set! {"en","zh","es","fr","de","ja","it","ko","ru","pt","sq","ar","am","as","az","ee","ay","ga","et","or","om","eu","be","bm","bg","is","pl","bs","fa","bho","af","tt","da","dv","ti","doi","sa","fil","fi","fy","km","ka","gom","gu","gn","kk","ht","ha","nl","ky","gl","ca","cs","kn","co","hr","qu","ku","ckb","la","lv","lo","lt","ln","lg","lb","rw","ro","mg","mt","mr","ml","ms","mk","mai","mi","mni-Mtei","mn","bn","lus","my","hmn","xh","zu","ne","no","pa","ps","ny","ak","sv","sm","sr","nso","st","si","eo","sk","sl","sw","gd","ceb","so","tg","te","ta","th","tr","tk","cy","ug","ur","uk","uz","he","el","haw","sd","hu","sn","hy","ig","ilo","yi","hi","su","id","jv","yo","vi","zh-TW","ts"};
 
 // pub const NOSPACE: phf::Set<&str> = phf::phf_set! {"zh", "zh-TW", "ja", "km", "th", "lo"};
 
@@ -21,8 +22,8 @@ pub fn lang_bin(lang: &str) -> Box<[u8]> {
 }
 
 pub fn lang_id(lang: &str) -> u8 {
-  if let Some(p) = LANG.get_index(lang) {
-    return p as _;
+  if let Some(p) = LANG.get(lang) {
+    return *p;
   }
   0
 }

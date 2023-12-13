@@ -2,14 +2,11 @@
 #![feature(type_alias_impl_trait)]
 #![feature(impl_trait_in_assoc_type)]
 
-pub use aerr::{err, form, msg, ok, Err, Error, FnAny, Msg, Result};
+pub use aerr::*;
 
 pub mod origin;
 pub use origin::{origin, origin_tld};
 pub mod host;
-pub use host::{host, host_tld};
-pub use tracing;
-mod middleware;
 pub use axum::{
   self,
   extract::ConnectInfo,
@@ -17,8 +14,9 @@ pub use axum::{
   response::IntoResponse,
   Extension,
 };
-pub use middleware::middleware;
+pub use host::{host, host_tld};
 pub use tower_http;
+pub use tracing;
 mod log;
 mod srv;
 

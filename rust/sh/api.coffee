@@ -17,36 +17,36 @@ removeEnd = (s)=>
     return s.slice(0,-1)
   s
 
+splitTrim = (i)=>
+  i.split(',').map (i)=>i.trim()
+
+
 json_args = (code)=>
-  args = []
-  begin = code.indexOf('from_str(')
-  if ~begin
-    t = code.slice(0, begin)
-    begin = t.lastIndexOf('let ')
-    if ~begin
-      begin += 4
-      t = t.slice(begin)
-      begin = t.indexOf('(')
-      if ~begin
-        t = t.slice(begin+1).trimStart()
-      end = t.lastIndexOf(')')
-      if ~end
-        t = t.slice(0,end)
-        [name, type] = t.split(':')
-        name = name.trim().replace(/\s*\)$/,'')
-        name = removeEnd(name).split(',').map((i)=>i.trim())
+  end = code.lastIndexOf(')>')
+  code = code.slice(0,end)
+  [name,type] = code.split(':::jarg::Json<(')
 
-        type = removeEnd(type.trim().replace(/\(/,'')).split(',').map((i)=>i.trim())
-        for i, p in name
-          args.push [i,type[p]]
+  name = splitTrim name
+  name[0] = name[0].slice(1).trimStart()
+  if name.at(-1) == ')'
+    name.pop()
+
+  len = name.length-1
+  if len >= 0
+    loop
+      t = name[len]
+      if t.endsWith ')'
+        name[len] = t.slice(0,-1)
       else
-        end = t.lastIndexOf('=')
-        if ~end
-          [name, type] = t.slice(0,end).split(':')
-          args.push [name.trim(), type.trim()]
+        break
 
-  # post_args = []
-  return args
+  type = splitTrim type
+
+  name.map (i,p)=>
+    [
+      i
+      type[p]
+    ]
 
 return_type = (code)=>
   p = code.indexOf('Ok(api::')
@@ -67,8 +67,17 @@ return_type = (code)=>
         return code.slice(0,end).trim()
   '()'
 
-hasCaptcha = (code)=>
-  return !! ~ code.indexOf' captcha::verify('
+hasCaptcha = (args)=>
+  r = []
+  + has
+  for i from args.split(',')
+    if i.endsWith(':Captcha')
+      if i.startsWith('_:')
+        has = true
+        continue
+    r.push(i)
+
+  return [r.join(','),has]
 
 async_export = (def)=>
   'pub async fn '+ def + '('
@@ -100,22 +109,33 @@ api = (url, code)=>
   r = args_body('post', code)
   if r
     [args, body] = r
-    args = args.replaceAll('\n',' ').replace(/\s+/g,' ').trim().replace(/,$/,'')
+    args = args.replaceAll('\n',' ').replace(/\s+/g,' ').trim().replace(
+      /\s*[:,\(\)]\s*/g
+      (m)=>
+        m.trim()
+
+    ).replace(/,$/,'').replaceAll(',)',')')
     rt = return_type(body)
-    has_captcha = hasCaptcha(body)
-    tip = "#{url}(#{args}) -> #{rt}"
-    if has_captcha
-      tip = '🚧 '+tip
-    console.log '\n'+tip
+    [args,has_captcha] = hasCaptcha(args)
     post_args = []
-    if /: String\b/.test(args)
-      a =  json_args(body)
+    pos = args.indexOf('::jarg::Json(')
+    if pos>=0
+      json = args.slice(pos+13)
+      args = args.slice(0,pos).replace(/,$/,'')
+      a =  json_args(json)
       json = a.map(
         ([name,type])=>
           post_args.push "#{name}:#{type}"
           "  #{name} : #{type}"
       ).join('\n')
+
+    tip = "#{url}(#{args}) -> #{rt}"
+    if has_captcha
+      tip = '🚧 '+tip
+    if pos >= 0
       console.log json
+
+    console.log '\n'+tip
     post_args = post_args.join(';')
     post_args += ('→' + rt)
     if has_captcha

@@ -20,7 +20,7 @@ pub async fn srv(router: Router) -> u16 {
       } else {
         Err((
           StatusCode::INTERNAL_SERVER_ERROR,
-          format!("Unhandled internal error: {}", error),
+          format!("Internal Error: {}", error),
         ))
       }
     }))

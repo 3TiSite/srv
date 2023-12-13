@@ -1,76 +1,38 @@
-use std::{ops::Deref, sync::Arc};
+#![feature(async_closure)]
+
+use std::ops::Deref;
 
 use axum::{
-  extract::Request,
   http::{
     header::{COOKIE, HOST, SET_COOKIE},
+    request::Parts,
     StatusCode,
   },
-  middleware::Next,
-  response::Response,
-  Extension,
+  Extension, RequestPartsExt,
 };
-use t3::middleware;
+use set_header::Header;
+use t3::host::Error;
 pub use user;
-use user::{client_by_token, client_user_cookie, cookie_set, ClientUser};
+use user::{client_user_cookie, cookie_set, ClientUser};
 use xtld::url_tld;
 
-#[derive(Debug, Clone)]
-pub struct _Client(pub Arc<ClientUser>);
+pub struct Client(pub ClientUser);
 
-pub type Client = Extension<_Client>;
-
-fn header_get<B>(req: &Request<B>, key: impl AsRef<str>) -> Option<&str> {
-  req
-    .headers()
-    .get(key.as_ref())
-    .and_then(|header| header.to_str().ok())
-}
-
-async fn _client(mut req: Request, next: Next) -> anyhow::Result<Response> {
-  if let Some(i) = header_get(&req, "I") {
-    // api 请求
-    let client_user = client_by_token(i).await?;
-    req.extensions_mut().insert(_Client(client_user.into()));
-    return Ok(next.run(req).await);
+impl Deref for Client {
+  type Target = ClientUser;
+  fn deref(&self) -> &<Self as Deref>::Target {
+    &self.0
   }
-  if let Some(host) = header_get(&req, HOST) {
-    let host = host.to_owned();
-
-    let (client_user, set_cookie) = client_user_cookie(header_get(&req, COOKIE)).await?;
-
-    let client_user = Arc::new(client_user);
-
-    req.extensions_mut().insert(_Client(client_user.clone()));
-
-    let mut r = next.run(req).await;
-
-    if set_cookie {
-      let host = url_tld(host);
-      let cookie_li = cookie_set(&host, client_user.id);
-      for i in cookie_li.into_iter() {
-        r.headers_mut().append(SET_COOKIE, i.parse()?);
-      }
-    }
-
-    Ok(r)
-  } else {
-    Err(t3::host::Error::HeaderMissHost.into())
-  }
-}
-
-pub async fn client(req: Request, next: Next) -> Response {
-  middleware(_client(req, next).await)
 }
 
 #[macro_export]
 macro_rules! unauthorized {
   () => {
-    t3::err(StatusCode::UNAUTHORIZED, "need login".to_owned())
+    t3::err(StatusCode::UNAUTHORIZED, "UNAUTHORIZED".to_owned())
   };
 }
 
-impl _Client {
+impl Client {
   pub async fn uid_logined(&self, uid: u64) -> Result<(), t3::Err> {
     if uid > user::UID_STATE_UNSET && self.is_login(uid).await? {
       return Ok(());
@@ -86,9 +48,33 @@ impl _Client {
   }
 }
 
-impl Deref for _Client {
-  type Target = ClientUser;
-  fn deref(&self) -> &<Self as Deref>::Target {
-    &self.0
+apart::from_request_parts!(Client, async move |parts: &mut Parts| {
+  let host = parts.headers.get(HOST);
+  if let Some(Ok(host)) = host.map(|i| i.to_str()) {
+    let cookie = if let Some(Ok(c)) = parts.headers.get(COOKIE).map(|i| i.to_str()) {
+      Some(c)
+    } else {
+      None
+    };
+
+    let (client_user, set_cookie) = client_user_cookie(cookie).await?;
+    if set_cookie {
+      let host = url_tld(host);
+      let cookie_li = cookie_set(&host, client_user.id);
+
+      let Extension(map) = parts.extract::<Extension<Header>>().await?;
+      for i in cookie_li.into_iter() {
+        match i.parse() {
+          Ok(i) => {
+            map.push(SET_COOKIE, i);
+          }
+          Err(err) => {
+            tracing::error!("{}", err);
+          }
+        }
+      }
+    }
+    return Ok(Self(client_user));
   }
-}
+  Err(Error::HeaderMissHost)?
+});

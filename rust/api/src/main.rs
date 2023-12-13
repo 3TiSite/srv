@@ -8,8 +8,8 @@
 
 mod route;
 use axum::{middleware, routing, Router};
-use client::client;
 use exepid::exepid;
+use set_header::set_header;
 
 #[tokio::main(flavor = "multi_thread")]
 async fn main() -> anyhow::Result<()> {
@@ -22,40 +22,40 @@ async fn main() -> anyhow::Result<()> {
   let mut router = Router::new();
 
   macro_rules! req {
-    // (=> $func:ident) => {
-    //     post!("", $func)
-    // };
-    ($method:ident $wrap:ident  $($url:ident),+) => {
-        req!($method $wrap $($url=>$url);+)
-    };
-    ($method:ident $wrap:ident $($url:stmt => $func:ident);+) => {
-        $(
-            req!(
-                $method
-                $wrap
-                const_str::replace!(
+        // (=> $func:ident) => {
+        //     post!("", $func)
+        // };
+        ($method:ident $wrap:ident  $($url:ident),+) => {
+            req!($method $wrap $($url=>$url);+)
+        };
+        ($method:ident $wrap:ident $($url:stmt => $func:ident);+) => {
+            $(
+                req!(
+                    $method
+                    $wrap
                     const_str::replace!(
-                        const_str::unwrap!(const_str::strip_suffix!(stringify!($url), ";")),
-                        " ",
-                        ""
+                        const_str::replace!(
+                            const_str::unwrap!(const_str::strip_suffix!(stringify!($url), ";")),
+                            " ",
+                            ""
+                        ),
+                        "&",
+                        ":"
                     ),
-                    "&",
-                    ":"
-                ),
-                $func
-            );
-        )+
-    };
-    ($method:ident $wrap:ident $url:expr, $func:ident) => {
-        router = router.route(
-            const_str::concat!('/', $url),
-            routing::$method(t3::$wrap(url::$func::$method)),
-        )
-    };
-}
+                    $func
+                );
+            )+
+        };
+        ($method:ident $wrap:ident $url:expr, $func:ident) => {
+            router = router.route(
+                const_str::concat!('/', $url),
+                routing::$method(t3::$wrap(url::$func::$method)),
+            )
+        };
+    }
 
   route!();
 
-  t3::srv(router.layer(middleware::from_fn(client))).await;
+  t3::srv(router.layer(middleware::from_fn(set_header))).await;
   Ok(())
 }

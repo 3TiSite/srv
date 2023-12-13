@@ -9,7 +9,6 @@ use tokio::time::sleep;
 genv::s!(WARN_MAIL);
 
 pub async fn logerr(cron_id: u32, dir: String, sh: String, code: i32, msg: &[u8]) -> Result<()> {
-  let msg = msg.as_ref();
   let txt = String::from_utf8_lossy(msg);
   println!("cron_id {cron_id} exit {code}\n{txt}\n");
   m::exe!(
@@ -90,7 +89,7 @@ async fn main() -> Result<()> {
       }
     }
   } else {
-    eprint!("miss args dir\n");
+    eprintln!("miss args dir");
     std::process::exit(1);
   }
 }

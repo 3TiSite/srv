@@ -14,7 +14,7 @@ upgrade() {
 MOD=$(realpath $DIR/../..)/mod
 
 for fp in $(find $MOD -type f -name Cargo.toml); do
-  upgrade $(dirname fp)
+  upgrade $(dirname $fp)
 done
 
 upgrade $DIR

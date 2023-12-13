@@ -282,7 +282,6 @@ pub async fn client_user_cookie(cookie: Option<impl AsRef<str>>) -> Result<(Clie
         ClientUser {
           id: c.id,
           _uid: UID_STATE_UNSET.into(),
-          ..Default::default()
         },
         false,
       ));

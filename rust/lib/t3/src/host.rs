@@ -13,7 +13,7 @@ pub fn host(header: &HeaderMap) -> Result<String> {
   if let Some(o) = header.get(HOST) {
     return Ok(xtld::url_host_port(o.to_str()?));
   }
-  Err(Error::HeaderMissHost.into())
+  Err(Error::HeaderMissHost)?
 }
 
 pub fn host_tld(header: &HeaderMap) -> Result<String> {
