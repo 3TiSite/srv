@@ -7,7 +7,7 @@ pub use mysql_async::{
   Error, Params, Result,
 };
 use mysql_async::{OptsBuilder, Pool};
-pub use trt::spawn;
+pub use trt::bg;
 
 pub const MYSQL_DEFAULT_PORT: u16 = 3306;
 
@@ -54,15 +54,15 @@ macro_rules! def {
     };
     ($m:ident $func:ident) => {
 #[macro_export]
-        macro_rules! $m {
-            ($conn:expr; $sql:expr $$(,$arg:expr)* $$(,)?) => {
-                $$crate::conn!($$conn; $func $$sql $$(,$$arg)*)
-            };
-            ($sql:expr $$(,$arg:expr)* $$(,)?) => {
-                $$crate::conn!($func $$sql $$(,$$arg)*)
-            };
-        }
-    };
+macro_rules! $m {
+($conn:expr; $sql:expr $$(,$arg:expr)* $$(,)?) => {
+$$crate::conn!($$conn; $func $$sql $$(,$$arg)*)
+};
+($sql:expr $$(,$arg:expr)* $$(,)?) => {
+$$crate::conn!($func $$sql $$(,$$arg)*)
+};
+}
+};
 }
 
 def!(
@@ -74,9 +74,9 @@ def!(
 #[macro_export]
 macro_rules! bg {
     ($sql:expr $(,$arg:expr)* $(,)?) => {{
-        $crate::spawn!(async move {
-            $crate::exe!($sql $(,$arg)*);
-            Ok::<_,$crate::Error>(())
+        $crate::bg(async move {
+          $crate::exe!($sql $(,$arg)*);
+          Ok::<_,$crate::Error>(())
         });
     }};
 }

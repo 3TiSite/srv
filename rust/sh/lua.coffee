@@ -9,7 +9,7 @@
   @3-/write
   @3-/snake > SNAKE
   @3-/camel
-  @3-/kv:KV
+  @3-/redis/R.js
 
 flagsDef = (name, flags)=>
   if flags.length
@@ -22,12 +22,6 @@ flagsDef = (name, flags)=>
   return def
 
 load = (mod, fp)=>
-  lib = basename(fp).slice(0,-4)
-  if lib == 'init'
-    lib = ''
-  else
-    lib = '_'+lib
-  lib = camel mod+lib
   li = []
   name_li = []
   for i from read(fp).split('\n')
@@ -70,29 +64,26 @@ export default main = =>
   code = load('',join ROOT, name)[0]
   console.log "-- #{name}\n\n"+code
 
-  code = '#!lua name=3Ti\n'+code
+  code = '#!lua name=I18N\n'+code
 
   base = dirname ROOT
   for mod from MOD
     rustdir = join base,'mod',mod
-    lua = join rustdir, 'lua'
+    lua = join rustdir, 'redis.lua'
     if existsSync lua
-      for await fp from walk lua
-        if fp.endsWith '.lua'
-          [c,rs] = load(mod, fp)
-          code += c
-          console.log "\n-- #{mod}\n"+c
-          if rs
-            lua_rs = join rustdir,'src/lua.rs'
-            write(
-              lua_rs
-              rs
-            )
+      [c,rs] = load(mod, lua)
+      code += c
+      console.log "\n-- #{mod}\n"+c
+      if rs
+        lua_rs = join rustdir,'src/lua.rs'
+        write(
+          lua_rs
+          rs
+        )
 
-  await KV.function('LOAD','REPLACE', code)
+  await R.function('LOAD','REPLACE', code)
   return
 
 if process.argv[1] == decodeURI (new URL(import.meta.url)).pathname
   await main()
   process.exit()
-

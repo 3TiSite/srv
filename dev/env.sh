@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -o allexport
-# KV_WORKERS=3
+# R_WORKERS=3
 #
 # MC_THREADS=2 # 每个线程的最小内存是256MB
 # MC_MAXMEMORY=512mb

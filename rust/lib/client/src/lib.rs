@@ -28,7 +28,7 @@ impl Deref for Client {
 #[macro_export]
 macro_rules! unauthorized {
   () => {
-    t3::err(StatusCode::UNAUTHORIZED, "UNAUTHORIZED".to_owned())
+    t3::err(StatusCode::UNAUTHORIZED, "".to_owned())
   };
 }
 
@@ -48,7 +48,7 @@ impl Client {
   }
 }
 
-apart::from_request_parts!(Client, async move |parts: &mut Parts| {
+pub async fn client(parts: &mut Parts) -> Result<Client, anyhow::Error> {
   let host = parts.headers.get(HOST);
   if let Some(Ok(host)) = host.map(|i| i.to_str()) {
     let cookie = if let Some(Ok(c)) = parts.headers.get(COOKIE).map(|i| i.to_str()) {
@@ -74,7 +74,19 @@ apart::from_request_parts!(Client, async move |parts: &mut Parts| {
         }
       }
     }
-    return Ok(Self(client_user));
+    return Ok(Client(client_user));
   }
   Err(Error::HeaderMissHost)?
+}
+
+apart::from_request_parts!(Client, client);
+
+pub struct Uid(pub u64);
+
+apart::from_request_parts!(Uid, async move |parts: &mut Parts| {
+  let client = client(parts).await?;
+  if let Some(id) = client.uid().await? {
+    return Ok(Uid(id));
+  }
+  apart::err(StatusCode::UNAUTHORIZED, "")?
 });

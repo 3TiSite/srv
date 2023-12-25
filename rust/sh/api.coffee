@@ -208,7 +208,7 @@ export default main = (dir)=>
   cd dir
   base = basename dir
   $.verbose = false
-  out = await $"cargo expand --theme=none"
+  out = await $"cargo expand --theme=none --lib"
   $.verbose = true
 
   import_li = []

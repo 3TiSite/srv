@@ -100,7 +100,7 @@ pub async fn conn(prefix: impl AsRef<str>) -> Result<RedisClient> {
 
   let host_port = map
     .get(NODE)
-    .unwrap_or_else(|| unreachable!("NEED ENV {prefix}_{}", NODE))
+    .unwrap_or_else(|| unreachable!("NEED ENV {prefix}{}", NODE))
     .split(' ')
     .map(|i| i.trim())
     .filter(|i| !i.is_empty())

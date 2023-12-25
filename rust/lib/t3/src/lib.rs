@@ -9,7 +9,7 @@ pub use origin::{origin, origin_tld};
 pub mod host;
 pub use axum::{
   self,
-  extract::ConnectInfo,
+  extract::{ConnectInfo, Path},
   http::{header::HeaderMap, StatusCode},
   response::IntoResponse,
   Extension,

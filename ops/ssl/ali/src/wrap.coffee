@@ -1,13 +1,11 @@
 #!/usr/bin/env coffee
 
-> dotenv
-  path > join dirname
+> path > join dirname
   @alicloud/tea-util > RuntimeOptions
   @alicloud/openapi-client:OpenApi > Config
-  @w5/uridir
+  @3-/uridir
 
 DIR = dirname uridir(import.meta)
-dotenv.config(path:join(DIR,'env'))
 
 {
   ALIYUN_accessKeyId: accessKeyId

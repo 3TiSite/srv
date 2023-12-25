@@ -2,7 +2,7 @@
 
 > @alicloud/cas20180713:_CAS
   @alicloud/cdn20180510:_CDN
-  @w5/read
+  @3-/read
   @w5/default:
   path > join
   ./pager
@@ -13,6 +13,7 @@ CAS = wrap _CAS, 'cas'
 CDN = wrap _CDN, 'cdn'
 
 cdnLs = =>
+  r = []
   for await {domainStatus,domainName} from pager(
     (pageNumber, pageSize)=>
       {
@@ -25,8 +26,8 @@ cdnLs = =>
       pageData
   )
     if domainStatus == 'online'
-      domainName
-
+      r.push domainName
+  r
 
 set = (domainName, certName)=>
   CDN.setDomainServerCertificate {
@@ -71,4 +72,3 @@ do =>
   await sslRm()
   process.exit()
   return
-

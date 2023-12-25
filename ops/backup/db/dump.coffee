@@ -89,6 +89,12 @@ for t from [
   [/ mediumint\(\d+\)/gi, ' MEDIUMINT']
   [/ bigint\(\d+\)/gi,' BIGINT']
   [/ null\b/gi,' NULL']
+  [/ text\b/gi, ' TEXT']
+  [/ blob\b/gi, ' BLOB']
+  [/ longblob\b/gi, ' LONGBLOB']
+  [/ longtext\b/gi, ' LONGTEXT']
+  [/ mediumblob\b/gi, ' MEDIUMBLOB']
+  [/ mediumtext\b/gi, ' MEDIUMTEXT']
   [/\s*,\s*/g,',']
 ]
   sql = sql.replace(...t)
@@ -217,7 +223,11 @@ S_TYPE = {
   VARBINARY: 'String'
   VARCHAR: 'String'
   TEXT: 'String'
-  BLOB: 'String'
+  MIDDLETEXT: 'String'
+  LONGTEXT: 'String'
+  BLOB: 'Vec<u8>'
+  MEDIUMBLOB: 'Vec<u8>'
+  LONGBLOB: 'Vec<u8>'
 }
 
 RT_TYPE = {

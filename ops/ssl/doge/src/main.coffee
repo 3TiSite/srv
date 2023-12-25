@@ -1,13 +1,11 @@
 #!/usr/bin/env coffee
 
 > @w5/doge
-  @w5/uridir
-  dotenv
+  @3-/uridir
   _ > bind
   path > dirname join
 
 DIR = dirname uridir(import.meta)
-dotenv.config(path:join(DIR,'env'))
 
 api = (url,data)=>
   doge("cdn/#{url}", data)

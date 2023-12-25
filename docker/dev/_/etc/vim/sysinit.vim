@@ -1,13 +1,22 @@
+set signcolumn=yes
+set updatetime=300
+set nobackup
+set nowritebackup
+
 " 安装 vi +PlugInstall +qall
 " 升级 vi +PlugUpdate +qall
 " vnoremap <F10> :call BitoCommand()<CR>
 
-let g:coc_data_home = '/etc/vim/coc'
+" 避免 rustfmt 失败的时候，搞乱宏的缩进
+let g:autoformat_autoindent = 0
+" 避免把 > 缩进改为4个
+let g:rust_recommended_style=0
 let g:autoformat_verbosemode=1
 
-let g:coc_node_path = trim(system('which node'))
-let g:python3_host_prog = trim(system('which python3'))
-let g:python_host_prog = trim(system('which python'))
+let g:coc_data_home = '/etc/vim/coc'
+let g:coc_node_path = trim(system('rtx which node'))
+let g:python3_host_prog = trim(system('rtx which python3'))
+let g:python_host_prog = trim(system('rtx which python'))
 
 source /etc/vim/plug.vim
 
@@ -56,6 +65,44 @@ Plug 'w0rp/ale'                       " 异步语法检查
 "Plug 'gkz/vim-ls',{'for':'ls'} " live script 语法高亮
 call plug#end()
 
+nmap mr :MRU<cr>
+nmap tt :NERDTreeToggle<cr>
+nmap cp :!pbcopy < %<cr>
+"nmap tl :TlistToggle<cr>
+"nmap bn :bn<cr>
+"nmap bp :bp<cr>
+"nmap ne :lnext<cr>
+"nmap pe :lprev<cr>
+
+
+"autocmd BufWritePre *.py :%s/^\(\s*print\)\s\+\(.*\)/\1(\2)/e
+autocmd BufWritePre *.{lua,mdt,md,svelte,vue,ls,cpp,c,d,slm,coffee,conf,html,sh,scss,css,xsh,styl} :%s/\t/  /ge
+autocmd BufWritePre *.{nt,yml,md,,mdt,lua,toml,svelte,zsh,txt,cpp,c,d,slm,coffee,conf,html,sh,scss,css,vue,sass,xsh,styl} :%s/\s\+$//e
+autocmd FileType vue syntax sync fromstart
+autocmd BufWritePre *.vue :syntax sync fromstart
+
+au BufRead,BufNewFile *.mdt set filetype=markdown
+autocmd BufWritePost *.{md,mdt} :silent! !heyspace -i % -b /tmp -q
+autocmd BufWritePost *.{md,mdt} :edit
+autocmd BufWritePost *.{md,mdt} :redraw!
+
+" au BufWritePost *.{lua} :Autoformat
+au BufWritePre *.{rs,lua,sh,h,cpp,c,v,proto,json,go,html,scss,css,dart,toml,pug,py} :Autoformat
+
+
+autocmd BufWritePost *.{js,mjs} :silent! !bun x @biomejs/biome format --write %
+autocmd BufWritePost *.{js,mjs} :edit
+autocmd BufWritePost *.{js,mjs} :redraw!
+
+" autocmd BufWritePost *.{rs} :silent! !rustfmt %
+" autocmd BufWritePost *.{rs} :edit
+" autocmd BufWritePost *.{rs} :redraw!
+
+" autocmd BufWritePost *.sql :silent! !pg_format -s 2 -W 999 -w 999 -i %
+" autocmd BufWritePost *.sql :edit
+" autocmd BufWritePost *.sql :redraw!
+" autocmd BufWritePre *.sql normal mmgg=G`m
+
 
 
 "Autoreload files when changed externally
@@ -76,7 +123,7 @@ let g:ale_linters = {
 \}
 
 let b:ale_fixers = {
-\ '*': ['remove_trailing_lines', 'trim_whitespace'],
+\ '*': ['remove_trailing_lines'],
 \  'python':['ruff']
 \}
 
@@ -394,37 +441,6 @@ let g:ctrlsf_auto_focus = {
     \ "duration_less_than": 1000
     \ }
 
-nmap mr :MRU<cr>
-nmap tt :NERDTreeToggle<cr>
-nmap cp :!pbcopy < %<cr>
-"nmap tl :TlistToggle<cr>
-"nmap bn :bn<cr>
-"nmap bp :bp<cr>
-"nmap ne :lnext<cr>
-"nmap pe :lprev<cr>
-
-
-"autocmd BufWritePre *.py :%s/^\(\s*print\)\s\+\(.*\)/\1(\2)/e
-autocmd BufWritePre *.{lua,mdt,md,svelte,vue,ls,cpp,c,d,rs,slm,coffee,conf,html,sh,scss,css,xsh,styl} :%s/\t/  /ge
-" autocmd BufWritePre *.{nt,yml,md,,mdt,lua,toml,svelte,zsh,txt,cpp,c,d,rs,slm,coffee,conf,html,sh,scss,css,vue,sass,xsh,styl} :%s/\s\+$//e
-autocmd FileType vue syntax sync fromstart
-autocmd BufWritePre *.vue :syntax sync fromstart
-
-au BufRead,BufNewFile *.mdt set filetype=markdown
-autocmd BufWritePost *.{md,mdt} :silent! !heyspace -i % -b /tmp -q
-autocmd BufWritePost *.{md,mdt} :edit
-autocmd BufWritePost *.{md,mdt} :redraw!
-
-" au BufWritePost *.{lua} :Autoformat
-au BufWritePre *.{lua,sh,h,cpp,c,v,proto,json,go,html,scss,css,dart,toml,rs,pug,py} :Autoformat
-autocmd BufWritePost *.{js,mjs} :silent! !bun x @biomejs/biome format --write %
-autocmd BufWritePost *.{js,mjs} :edit
-autocmd BufWritePost *.{js,mjs} :redraw!
-
-" autocmd BufWritePost *.sql :silent! !pg_format -s 2 -W 999 -w 999 -i %
-" autocmd BufWritePost *.sql :edit
-" autocmd BufWritePost *.sql :redraw!
-" autocmd BufWritePre *.sql normal mmgg=G`m
 
 let g:syntastic_swift_checkers = ['swiftpm', 'swiftlint']
 let g:vue_pre_processors = ['pug','coffee','stylus','styl']
@@ -612,13 +628,14 @@ inoremap <silent><expr> <TAB>
 \ coc#refresh()
 inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-set signcolumn=yes
-set updatetime=300
-set nobackup
-set nowritebackup
+" verbose set shiftwidth ? 可以查看是哪个插件动了这个参数
+" set tabstop? | set shiftwidth? | set softtabstop?
 
+set shiftround  " Round indent to multiple of 'shiftwidth'
+set smartindent " Do smart indenting when starting a new line
+set autoindent  " Copy indent from current line, over to the new line
 set expandtab
-set shiftwidth=2
 set smartindent
+set shiftwidth=2
 set softtabstop=2
 set tabstop=2

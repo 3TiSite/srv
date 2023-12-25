@@ -14,6 +14,10 @@ done
 
 set -ex
 
+cargo build
+
+echo "cargo exit with $?"
+
 exec watchexec \
   --shell=none \
   --project-origin . \

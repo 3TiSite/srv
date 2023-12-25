@@ -25,7 +25,7 @@ use r::{
     interfaces::{FunctionInterface, KeysInterface, RedisResult, SortedSetsInterface},
     prelude::FromRedis,
   },
-  KV,
+  R,
 };
 use sk::sk;
 use sts::sec;
@@ -106,7 +106,7 @@ impl ClientUser {
     // TODO : remove when merge https://github.com/blackbeam/rust_mysql_common/pull/112
     let ip: Vec<_> = ip.into();
 
-    trt::spawn!(async move {
+    trt::bg(async move {
       let ua_id: u64 = m::q1!(
         "SELECT authUaId(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         ua.width,
@@ -163,7 +163,7 @@ impl ClientUser {
   pub async fn uid(&self) -> RedisResult<Option<u64>> {
     let uid = self._uid.load(Relaxed);
     Ok(if UID_STATE_UNSET == uid {
-      self.set_uid_bin(self.zumax(&**KV).await?)
+      self.set_uid_bin(self.zumax(&**R).await?)
     } else if uid == UID_STATE_NOUSER {
       None
     } else {
@@ -174,11 +174,11 @@ impl ClientUser {
   pub async fn exit_all(&self) -> RedisResult<()> {
     let bin = &self.bin()[..];
     let key = client_uid(bin);
-    let li: Vec<Vec<u8>> = KV
+    let li: Vec<Vec<u8>> = R
       .zrange(key.clone(), 0, -1, None, false, None, false)
       .await?;
     if !li.is_empty() {
-      let p = KV.pipeline();
+      let p = R.pipeline();
 
       let mut args = Vec::with_capacity(1 + li.len());
       args.push(INSERT_UID_CLIENT_P.to_owned());
@@ -215,7 +215,7 @@ impl ClientUser {
 
   pub async fn is_login_bin(&self, uid_bin: &[u8]) -> RedisResult<bool> {
     let key = client_uid(&self.bin());
-    let r: Option<i64> = KV.zscore(key, uid_bin).await?;
+    let r: Option<i64> = R.zscore(key, uid_bin).await?;
     Ok(if let Some(s) = r { s > 0 } else { false })
   }
   pub async fn is_login(&self, uid: u64) -> RedisResult<bool> {

@@ -1,4 +1,4 @@
-use r::{fred::interfaces::HashesInterface, KV};
+use r::{fred::interfaces::HashesInterface, R};
 use trt::TRT;
 use util::random_bytes;
 
@@ -11,7 +11,7 @@ pub fn sk() -> &'static [u8] {
 #[static_init::constructor(0)]
 extern "C" fn init() {
   TRT.block_on(async move {
-    let redis = KV.0.force().await;
+    let redis = R.0.force().await;
     let conf = &b"conf"[..];
     let key = &b"SK"[..];
     let sk: Option<Vec<u8>> = redis.hget(conf, key).await.unwrap();

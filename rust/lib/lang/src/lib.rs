@@ -22,8 +22,8 @@ pub fn lang_bin(lang: &str) -> Box<[u8]> {
 }
 
 pub fn lang_id(lang: &str) -> u8 {
-  if let Some(p) = LANG.get(lang) {
-    return *p;
+  if let Some(p) = LANG.get_index(lang) {
+    return p as _;
   }
   0
 }
@@ -38,7 +38,7 @@ macro_rules! gen {
       li: &'a [&[u8]; N],
     ) -> RedisResult<Vec<String>> {
       let hset = &[HSET_PREFIX, &$crate::u8_bin(lang)].concat()[..];
-      KV.hmget(hset, li).await
+      R.hmget(hset, li).await
     }
 
     pub async fn get<'a, const N: usize>(
@@ -47,7 +47,7 @@ macro_rules! gen {
     ) -> RedisResult<Vec<String>> {
       let lang = $crate::header(header);
       let hset = &[HSET_PREFIX, &$crate::u8_bin(lang)].concat()[..];
-      KV.hget(hset, key).await
+      R.hget(hset, key).await
     }
 
     pub async fn throw_li<'a, const N: usize>(
@@ -68,7 +68,7 @@ macro_rules! gen {
     ) -> anyhow::Result<()> {
       let lang = $crate::header(header);
       let hset = &[HSET_PREFIX, &$crate::u8_bin(lang)].concat()[..];
-      let val: String = KV.hget(hset, val).await?;
+      let val: String = R.hget(hset, val).await?;
       Ok(t3::form::Error::throw(key.as_ref(), val)?)
     }
   };

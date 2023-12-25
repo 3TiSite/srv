@@ -78,8 +78,8 @@ services:
 #       -c /var/lib/kvrocks/kvrocks.conf
 #       --bind "0.0.0.0"
 #       --pidfile /var/run/kvrocks/kvrocks.pid
-#       --requirepass ${KV_PASSWORD}
-#       --workers ${KV_WORKERS}
+#       --requirepass ${R_PASSWORD}
+#       --workers ${R_WORKERS}
 #       --log /log
 #       --dir /data
 #       --timeout 360
@@ -90,4 +90,4 @@ services:
 #       - ./data/kv:/data
 #       - ./log/kv:/log
 #     ports:
-#       - ${KV_PORT}:6666
+#       - ${R_PORT}:6666

@@ -2,7 +2,7 @@
 
 > path > join
   fs > readdirSync existsSync statSync
-  @w5/read
+  @3-/read
   @w5/default:
 
 TODAY = new Date

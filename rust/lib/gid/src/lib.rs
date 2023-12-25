@@ -30,7 +30,7 @@ macro_rules! gid {
 
       use std::sync::Arc;
 
-      use $crate::{anyhow::Result, r::KV, tokio::sync::Mutex, IdMax};
+      use $crate::{anyhow::Result, r::R, tokio::sync::Mutex, IdMax};
 
       pub static ID: Mutex<IdMax> = Mutex::const_new(IdMax {
         id: 0,
@@ -61,13 +61,13 @@ macro_rules! gid {
           }
 
           let step = $id.step;
-          let max = r::KV
+          let max = r::R
             .hincrby::<u64, _, _>($crate::ID, stringify!($key), step as _)
             .await?;
 
           // 对大 ID 回绕
           // if max > u64::MAX - $crate::STEP_MAX {
-          //   KV.hset($crate::ID, (stringify!(key), 0)).await?;
+          //   R.hset($crate::ID, (stringify!(key), 0)).await?;
           // }
 
           $id.max = max;
@@ -79,7 +79,7 @@ macro_rules! gid {
       pub fn init() -> Result<()> {
         $crate::trt::TRT.block_on(async move {
           let mut id = ID.lock().await;
-          KV.0.force().await;
+          R.0.force().await;
           next!(id);
           Ok(())
         })

@@ -6,6 +6,11 @@ cd $DIR
 
 HOST=$1
 
+export HOME=/mnt/www
+export LE_WORKING_DIR=$HOME/.acme.sh
+ACME_DIR=$HOME/.acme.sh
+acme=$ACME_DIR/acme.sh
+
 conf=$CONF/ssl.sh
 
 source $conf
@@ -22,12 +27,7 @@ fi
 
 set -ex
 
-export HOME=/mnt/www
-export LE_WORKING_DIR=$HOME/.acme.sh
 # export DEBUG=1
-
-ACME_DIR=$HOME/.acme.sh
-acme=$ACME_DIR/acme.sh
 
 ACME_DIR_ENV=$ACME_DIR/acme.sh.env
 
@@ -79,6 +79,7 @@ gen() {
       -d $HOST -d *.$HOST \
       --force \
       $dnssleep \
+      --server $server \
       --log --reloadcmd "$reload"
   fi
 }

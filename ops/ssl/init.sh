@@ -4,4 +4,4 @@ DIR=$(dirname $(realpath "$0"))
 cd $DIR
 set -ex
 
-pnpm_i $DIR
+pnpm i -C $DIR

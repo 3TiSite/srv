@@ -6,9 +6,9 @@ services:
     restart: always
     command: >
       /redis.conf
-      --requirepass ${KV_PASSWORD}
+      --requirepass ${R_PASSWORD}
     volumes:
       - ./conf/redis.conf:/redis.conf
       - ./mnt/data/redis:/data
     ports:
-      - ${KV_PORT}:6379
+      - ${R_PORT}:6379
