@@ -9,6 +9,7 @@ mysqldump \
   --skip-set-charset \
   --events \
   --skip-add-drop-table \
+  --set-gtid-purged=OFF \
   --column-statistics=0 \
   --routines \
   -u"$DB_USER" \
