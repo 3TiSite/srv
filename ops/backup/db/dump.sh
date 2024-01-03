@@ -2,7 +2,7 @@
 
 DIR=$(realpath $0) && DIR=${DIR%/*}
 cd $DIR
-export MYSQL_PWD=$DB_PASSWORD
+export MYSQL_PWD=$MYSQL_PASSWORD
 set -ex
 
 mysqldump \
@@ -13,8 +13,8 @@ mysqldump \
   --set-gtid-purged=OFF \
   --column-statistics=0 \
   --routines \
-  -u"$DB_USER" \
-  -P$DB_PORT -h$DB_HOST -d "$DB_NAME" >$DB_NAME.sql
+  -u"$MYSQL_USER" \
+  -P$MYSQL_PORT -h$MYSQL_HOST -d "$MYSQL_NAME" >$MYSQL_NAME.sql
 # --column-statistics=0 \
 # --compatible=no_table_options \
 

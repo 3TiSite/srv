@@ -18,11 +18,11 @@ ROOT = resolve(
 )
 
 {
-  DB_NAME
-  DB_HOST
-  DB_PASSWORD
-  DB_PORT
-  DB_USER
+  MYSQL_NAME
+  MYSQL_HOST
+  MYSQL_PASSWORD
+  MYSQL_PORT
+  MYSQL_USER
 } = process.env
 
 scan = (dir)=>
@@ -55,7 +55,7 @@ scan = (dir)=>
           await $e(i)
   init_sql = join dir,'init.sql'
   if existsSync init_sql
-     await $"MYSQL_PWD=#{DB_PASSWORD} mysql -h #{DB_HOST} -P#{DB_PORT} -u #{DB_USER} #{DB_NAME} < #{init_sql}"
+     await $"MYSQL_PWD=#{MYSQL_PASSWORD} mysql -h #{MYSQL_HOST} -P#{MYSQL_PORT} -u #{MYSQL_USER} #{MYSQL_NAME} < #{init_sql}"
   return
 
 await scan join ROOT,'db'
