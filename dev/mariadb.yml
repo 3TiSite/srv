@@ -3,11 +3,12 @@ version: '3'
 services:
 
   db:
-    image: i18nsite/mariadb
+    image: 3tisite/mariadb
     restart: always
     ports:
       - ${MYSQL_PORT}:3306
     environment:
+      MYSQL_PASSWORD: ${MYSQL_PWD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_PWD}
       MYSQL_USER: ${MYSQL_USER}
     volumes:
