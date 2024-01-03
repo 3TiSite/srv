@@ -6,11 +6,11 @@
   fs > existsSync
   crypto
 {
-  DB_PASSWORD
-  DB_NAME
-  DB_PORT
-  DB_USER
-  DB_HOST
+  MYSQL_PWD
+  MYSQL_NAME
+  MYSQL_PORT
+  MYSQL_USER
+  MYSQL_HOST
 } = process.env
 
 to = join ROOT,'conf/phpmyadmin.config.php'
@@ -35,9 +35,9 @@ $i++;
 $cfg['Servers'][$i]['auth_type'] = 'config';
 /* Server parameters */
 $cfg['Servers'][$i]['host'] = 'host.docker.internal';
-$cfg['Servers'][$i]['user'] = '#{DB_USER}';
-$cfg['Servers'][$i]['port'] = '#{DB_PORT}';
-$cfg['Servers'][$i]['password'] = '#{DB_PASSWORD}';
+$cfg['Servers'][$i]['user'] = '#{MYSQL_USER}';
+$cfg['Servers'][$i]['port'] = '#{MYSQL_PORT}';
+$cfg['Servers'][$i]['password'] = '#{MYSQL_PWD}';
 $cfg['Servers'][$i]['compress'] = true;
 $cfg['Servers'][$i]['AllowNoPassword'] = true;
 
