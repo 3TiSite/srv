@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  gate:
+    image:  3tisite/nginx
+    restart: always
+    volumes:
+      - ../..:/mnt/www
+      - ./mnt/log/nginx:/var/log/nginx
+      - ./conf/nginx:/etc/nginx
+    ports:
+      - 80:80
+      - 443:443
+      - 443:443/udp
+      - 7775:7775
+      - 7776:7776
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

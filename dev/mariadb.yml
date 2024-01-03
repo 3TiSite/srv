@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+
+  db:
+    image: 3tisite/mariadb
+    restart: always
+    ports:
+      - ${DB_PORT}:3306
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./mnt/backup/mariadb:/backup
+      - ./mnt/data/mariadb:/var/lib/mysql
+      - ./conf/init/mariadb:/docker-entrypoint-initdb.d
