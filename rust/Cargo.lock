@@ -588,7 +588,7 @@ dependencies = [
  "prost-build",
  "r",
  "rand",
- "sonic-rs 0.3.0",
+ "sonic-rs 0.3.1",
  "t3",
  "tokio",
  "tracing",
@@ -2456,9 +2456,9 @@ dependencies = [
 
 [[package]]
 name = "mysql_macro"
-version = "0.1.3"
+version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "660144a5e8d2f02b5745cb9eb658381fbcea7d9bd2cdcefbe90c5a8661948493"
+checksum = "d9c0762913079187f6bc70187983d1cab2cda5f535aa7748d7a7be9c78e7cba1"
 dependencies = [
  "genv",
  "mysql_async",
@@ -2744,7 +2744,7 @@ dependencies = [
  "prost-build",
  "r",
  "rand",
- "sonic-rs 0.3.0",
+ "sonic-rs 0.3.1",
  "sts",
  "t3",
  "trt",
@@ -3836,9 +3836,9 @@ dependencies = [
 
 [[package]]
 name = "sonic-rs"
-version = "0.3.0"
+version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5745881bb457c68bed8ec1e69f9a7f181d07a1160ded66cf78bb49719c296337"
+checksum = "919ee6879a83eaaaf93db059cedb5de2a659c4eb489dbc7279020b4b6902ba98"
 dependencies = [
  "arrayref",
  "bumpalo",
@@ -3846,7 +3846,6 @@ dependencies = [
  "cfg-if",
  "faststr",
  "itoa",
- "packed_simd",
  "page_size",
  "parking_lot 0.12.1",
  "ryu",
@@ -4533,7 +4532,7 @@ dependencies = [
  "reqwest",
  "reqwest-middleware",
  "reqwest-retry",
- "sonic-rs 0.3.0",
+ "sonic-rs 0.3.1",
  "t3",
  "tokio",
  "tracing",
@@ -4549,7 +4548,7 @@ dependencies = [
  "anyhow",
  "const-str",
  "preq",
- "sonic-rs 0.3.0",
+ "sonic-rs 0.3.1",
  "url 2.5.0",
 ]
 
@@ -4762,7 +4761,7 @@ dependencies = [
  "m",
  "r",
  "sk",
- "sonic-rs 0.3.0",
+ "sonic-rs 0.3.1",
  "static_init",
  "sts",
  "tracing",
