@@ -6,7 +6,7 @@
   @3-/nt/load.js
   path > join
 
-prefix = 'i18n'
+prefix = '3ti'
 yml = """version: '3'
 services:"""
 
