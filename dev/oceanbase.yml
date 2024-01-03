@@ -5,11 +5,11 @@ services:
     image: oceanbase/oceanbase-ce:4.2.1_bp1_hf1
     restart: always
     ports:
-      - ${DB_PORT}:2881
+      - ${MYSQL_PORT}:2881
     environment:
       MODE: slim
-      OB_ROOT_PASSWORD: ${DB_PASSWORD}
-      OB_TENANT_NAME: ${DB_TENANT}
+      OB_ROOT_PASSWORD: ${MYSQL_PWD}
+      OB_TENANT_NAME: ${MYSQL_TENANT}
       OB_TENANT_LOWER_CASE_TABLE_NAMES: 0
     volumes:
       - ./conf/init/oceanbase:/root/boot/init.d

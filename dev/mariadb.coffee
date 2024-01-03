@@ -5,19 +5,19 @@
   ./conf > ROOT
 
 {
-  DB_PASSWORD
-  DB_NAME
-  DB_USER
+  MYSQL_PWD
+  MYSQL_NAME
+  MYSQL_USER
 } = process.env
 
 sql = """
-CREATE DATABASE `#{DB_NAME}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE `#{MYSQL_NAME}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 """
 
-if DB_USER != "root"
+if MYSQL_USER != "root"
   sql += """
-CREATE USER '#{DB_USER}'@'%' IDENTIFIED BY '#{DB_PASSWORD}';
-GRANT ALL PRIVILEGES ON #{DB_NAME}.* TO '#{DB_USER}'@'%';
+CREATE USER '#{MYSQL_USER}'@'%' IDENTIFIED BY '#{MYSQL_PWD}';
+GRANT ALL PRIVILEGES ON #{MYSQL_NAME}.* TO '#{MYSQL_USER}'@'%';
 """
 
 write(
