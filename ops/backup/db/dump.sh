@@ -2,7 +2,7 @@
 
 DIR=$(realpath $0) && DIR=${DIR%/*}
 cd $DIR
-export MYSQL_PWD=$MYSQL_PASSWORD
+export MYSQL_PWD=$MYSQL_PWD
 set -ex
 
 mysqldump \
