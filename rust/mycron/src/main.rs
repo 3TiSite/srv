@@ -16,7 +16,7 @@ pub async fn logerr(cron_id: u32, dir: String, sh: String, code: i32, msg: &[u8]
     msg
   );
 
-  xsmtp::send(
+  xsmtp::send_bg(
     "mycron",
     &**WARN_MAIL,
     format!("{dir} {sh} EXIT {code}"),
