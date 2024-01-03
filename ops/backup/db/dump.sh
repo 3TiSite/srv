@@ -14,7 +14,7 @@ mysqldump \
   --column-statistics=0 \
   --routines \
   -u"$MYSQL_USER" \
-  -P$MYSQL_PORT -h$MYSQL_HOST -d "$MYSQL_NAME" >$MYSQL_NAME.sql
+  -P$MYSQL_PORT -h$MYSQL_HOST -d "$MYSQL_DB" >$MYSQL_DB.sql
 # --column-statistics=0 \
 # --compatible=no_table_options \
 

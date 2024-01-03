@@ -7,7 +7,7 @@
   crypto
 {
   MYSQL_PWD
-  MYSQL_NAME
+  MYSQL_DB
   MYSQL_PORT
   MYSQL_USER
   MYSQL_HOST

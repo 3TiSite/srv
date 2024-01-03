@@ -6,18 +6,18 @@
 
 {
   MYSQL_PWD
-  MYSQL_NAME
+  MYSQL_DB
   MYSQL_USER
 } = process.env
 
 sql = """
-CREATE DATABASE `#{MYSQL_NAME}` CHARACTER SET binary COLLATE binary;
+CREATE DATABASE `#{MYSQL_DB}` CHARACTER SET binary COLLATE binary;
 """
 
 if MYSQL_USER != "root"
   sql += """
 CREATE USER '#{MYSQL_USER}'@'%' IDENTIFIED BY '#{MYSQL_PWD}';
-GRANT ALL PRIVILEGES ON #{MYSQL_NAME}.* TO '#{MYSQL_USER}'@'%';
+GRANT ALL PRIVILEGES ON #{MYSQL_DB}.* TO '#{MYSQL_USER}'@'%';
 """
 
 write(

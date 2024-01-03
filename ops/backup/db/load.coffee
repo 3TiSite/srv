@@ -18,7 +18,7 @@ ROOT = resolve(
 )
 
 {
-  MYSQL_NAME
+  MYSQL_DB
   MYSQL_HOST
   MYSQL_PASSWORD
   MYSQL_PORT
@@ -55,7 +55,7 @@ scan = (dir)=>
           await $e(i)
   init_sql = join dir,'init.sql'
   if existsSync init_sql
-     await $"MYSQL_PWD=#{MYSQL_PASSWORD} mysql -h #{MYSQL_HOST} -P#{MYSQL_PORT} -u #{MYSQL_USER} #{MYSQL_NAME} < #{init_sql}"
+     await $"MYSQL_PWD=#{MYSQL_PASSWORD} mysql -h #{MYSQL_HOST} -P#{MYSQL_PORT} -u #{MYSQL_USER} #{MYSQL_DB} < #{init_sql}"
   return
 
 await scan join ROOT,'db'

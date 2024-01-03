@@ -18,13 +18,13 @@ firstUpperCase = (str) =>
   return -1
 
 {
-  MYSQL_NAME
+  MYSQL_DB
 } = process.env
 
 PWD = uridir(import.meta)
 ROOT = resolve PWD,'../../..'
 MOD = join ROOT, 'mod'
-DUMP_SQL = join PWD, MYSQL_NAME+'.sql'
+DUMP_SQL = join PWD, MYSQL_DB+'.sql'
 
 r = sqlLi read(DUMP_SQL)
 
