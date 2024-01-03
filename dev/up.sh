@@ -4,7 +4,7 @@ DIR=$(realpath $0) && DIR=${DIR%/*}
 cd $DIR
 set -ex
 
-./gen.coffee
+direnv exec . ./gen.coffee
 direnv exec . docker-compose up -d
 
 p=""

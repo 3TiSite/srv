@@ -3,7 +3,7 @@ version: '3'
 services:
 
   db:
-    image: i18nsite/mariadb
+    image: 3tisite/mariadb
     restart: always
     ports:
       - ${MYSQL_PORT}:3306
