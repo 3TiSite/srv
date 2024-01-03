@@ -11,7 +11,7 @@
 } = process.env
 
 sql = """
-CREATE DATABASE `#{MYSQL_NAME}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE `#{MYSQL_NAME}` CHARACTER SET binary COLLATE binary;
 """
 
 if MYSQL_USER != "root"
