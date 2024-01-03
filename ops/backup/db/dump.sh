@@ -8,6 +8,7 @@ set -ex
 mysqldump \
   --skip-set-charset \
   --events \
+  --compress \
   --skip-add-drop-table \
   --set-gtid-purged=OFF \
   --column-statistics=0 \
