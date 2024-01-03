@@ -14,4 +14,5 @@ mysqldump \
   -u"$DB_USER" \
   -P$DB_PORT -h$DB_HOST -d "$DB_NAME" >$DB_NAME.sql
 # --column-statistics=0 \
-./dump.coffee
+
+direnv exec . ./dump.coffee
