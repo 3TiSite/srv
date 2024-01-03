@@ -6,7 +6,7 @@
   @3-/nt/load.js
   path > join
 
-
+prefix = 'i18n'
 yml = """version: '3'
 services:"""
 
@@ -18,7 +18,7 @@ for [name, file] from Object.entries use
     await import(init)
   yml += """
 \n  #{name}:
-    container_name: 3ti-#{name}
+    container_name: #{prefix}-#{name}
     extends:
       file: #{file}.yml
       service: #{name}
