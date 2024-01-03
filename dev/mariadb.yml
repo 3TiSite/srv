@@ -3,12 +3,12 @@ version: '3'
 services:
 
   db:
-    image: 3tisite/mariadb
+    image: i18nsite/mariadb
     restart: always
     ports:
-      - ${DB_PORT}:3306
+      - ${MYSQL_PORT}:3306
     environment:
-      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${MYSQL_PWD}
     volumes:
       - ./mnt/backup/mariadb:/backup
       - ./mnt/data/mariadb:/var/lib/mysql
