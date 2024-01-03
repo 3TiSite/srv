@@ -28,8 +28,6 @@ DUMP_SQL = join PWD, DB_NAME+'.sql'
 
 r = sqlLi read(DUMP_SQL)
 
-console.log r
-
 nt = load MOD+'.nt'
 
 [GEN, gen] = gener()

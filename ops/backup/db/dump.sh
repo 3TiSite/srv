@@ -9,10 +9,11 @@ mysqldump \
   --skip-set-charset \
   --events \
   --skip-add-drop-table \
+  --column-statistics=0 \
   --routines \
-  --compatible=no_table_options \
   -u"$DB_USER" \
   -P$DB_PORT -h$DB_HOST -d "$DB_NAME" >$DB_NAME.sql
 # --column-statistics=0 \
+# --compatible=no_table_options \
 
 direnv exec . ./dump.coffee
