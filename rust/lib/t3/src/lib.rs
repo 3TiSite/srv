@@ -47,16 +47,16 @@ pub fn ok() -> Response {
 
 #[macro_export]
 macro_rules! compression_layer {
-    () => {{
-        use tower_http::compression::{
-            predicate::{NotForContentType, Predicate, SizeAbove},
-            CompressionLayer,
-        };
-        let predicate = SizeAbove::new(256)
-            // still don't compress gRPC
-            .and(NotForContentType::GRPC)
-            // still don't compress images
-            .and(NotForContentType::IMAGES);
-        CompressionLayer::new().compress_when(predicate)
-    }};
+  () => {{
+    use tower_http::compression::{
+        predicate::{NotForContentType, Predicate, SizeAbove},
+        CompressionLayer,
+    };
+    let predicate = SizeAbove::new(256)
+        // still don't compress gRPC
+        .and(NotForContentType::GRPC)
+        // still don't compress images
+        .and(NotForContentType::IMAGES);
+    CompressionLayer::new().compress_when(predicate)
+  }};
 }
