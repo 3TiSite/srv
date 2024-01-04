@@ -16,7 +16,7 @@ pub async fn srv(router: Router) -> u16 {
   let middleware = ServiceBuilder::new()
     .layer(HandleErrorLayer::new(|error: BoxError| async move {
       if error.is::<tower::timeout::error::Elapsed>() {
-        Ok(StatusCode::REQUEST_TIMEOUT)
+        Ok((StatusCode::REQUEST_TIMEOUT, "timeout"))
       } else {
         Err((
           StatusCode::INTERNAL_SERVER_ERROR,
