@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@3-/apint':
-    specifier: ^0.1.9
-    version: 0.1.9
+    specifier: ^0.1.11
+    version: 0.1.11
   '@3-/camel':
     specifier: ^0.0.3
     version: 0.0.3
@@ -59,8 +59,8 @@ dependencies:
 
 packages:
 
-  /@3-/apint@0.1.9:
-    resolution: {integrity: sha512-TENwlqbPrMpr24yXthRnwehoAsodWoxaChWfCRxJowfz3d7scU4gn9noJ6fgE43jboq1NdFTtdlVhoCMviAEwA==}
+  /@3-/apint@0.1.11:
+    resolution: {integrity: sha512-fLPCEQiDurX24jsWxPq4418GfkSVeFmS/t7RE9X9O+7MTj+LGUrIFr4UWnfvxJO2GdxLzP/ywR+sRPdv+rlutA==}
     hasBin: true
     dependencies:
       '@3-/camel': 0.0.3
