@@ -28,21 +28,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f26201604c87b1e01bd3d98f8d5d9a8fcbb815e8cedb41ffccbeb4bf593a35fe"
 
 [[package]]
-name = "aerr"
-version = "0.1.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0d075dfc5360b2042019836a4458dcc90e7a0ab28663b235b4e6a3bd6a739762"
-dependencies = [
- "anyhow",
- "axum",
- "bytes",
- "prost",
- "serde",
- "sonic-rs 0.2.6",
- "tracing",
-]
-
-[[package]]
 name = "aes"
 version = "0.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3168,6 +3153,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3b42e27ef78c35d3998403c1d26f3efd9e135d3e5121b0a4845cc5cc27547f4f"
 
 [[package]]
+name = "re"
+version = "0.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0363a46e154f9db9a0036da3e64214952628ca06e9f8da2c36c886c044209ff1"
+dependencies = [
+ "anyhow",
+ "axum",
+ "bytes",
+ "prost",
+ "serde",
+ "sonic-rs 0.3.1",
+ "tracing",
+]
+
+[[package]]
 name = "redis-protocol"
 version = "4.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4024,7 +4024,6 @@ dependencies = [
 name = "t3"
 version = "0.0.4"
 dependencies = [
- "aerr",
  "anyhow",
  "axum",
  "bytes",
@@ -4033,6 +4032,7 @@ dependencies = [
  "genv",
  "loginit",
  "once_cell",
+ "re",
  "thiserror",
  "tokio",
  "tower",

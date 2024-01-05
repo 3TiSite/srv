@@ -2,8 +2,6 @@
 #![feature(type_alias_impl_trait)]
 #![feature(impl_trait_in_assoc_type)]
 
-pub use aerr::*;
-
 pub mod origin;
 pub use origin::{origin, origin_tld};
 pub mod host;
