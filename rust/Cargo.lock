@@ -140,6 +140,7 @@ dependencies = [
  "rand",
  "re",
  "set_header",
+ "t3",
  "tokio",
  "tracing",
  "trt",
