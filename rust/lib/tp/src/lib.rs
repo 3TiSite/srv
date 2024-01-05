@@ -6,7 +6,7 @@ pub enum Error {
   HostNoBind,
 }
 
-pub fn host_is_bind<T>(id: Option<T>) -> t3::Result<T> {
+pub fn host_is_bind<T>(id: Option<T>) -> re::Result<T> {
   if id.is_none() {
     t3::err(
       t3::StatusCode::UNPROCESSABLE_ENTITY,
