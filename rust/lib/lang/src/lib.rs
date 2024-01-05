@@ -58,7 +58,7 @@ macro_rules! gen {
       let lang = $crate::header(header);
       let li = get_li(lang, li).await?;
       let space = $crate::space(lang);
-      Ok(t3::form::Error::throw(key.as_ref(), li.join(space))?)
+      Ok(re::form::Error::throw(key.as_ref(), li.join(space))?)
     }
 
     pub async fn throw(
@@ -69,7 +69,7 @@ macro_rules! gen {
       let lang = $crate::header(header);
       let hset = &[HSET_PREFIX, &$crate::u8_bin(lang)].concat()[..];
       let val: String = R.hget(hset, val).await?;
-      Ok(t3::form::Error::throw(key.as_ref(), val)?)
+      Ok(re::form::Error::throw(key.as_ref(), val)?)
     }
   };
 }
