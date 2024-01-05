@@ -2456,15 +2456,16 @@ dependencies = [
 
 [[package]]
 name = "mysql_macro"
-version = "0.1.6"
+version = "0.1.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bdd8305f9172ba1cedd3085ca288e99f0cc070992ec8bc4351a0fbc77cc1f023"
+checksum = "ac6eb37994bf22642bfb128c3fa9bc0239b7a4194469f407533a6d14a6c75a93"
 dependencies = [
  "genv",
  "mysql_async",
  "static_init",
  "tokio",
  "trt",
+ "xstr",
 ]
 
 [[package]]
