@@ -17,7 +17,7 @@ async fn main() -> anyhow::Result<()> {
   // let prepare =
   //   TRT.block_on(async move { xg::PG.force().await.prepare(" INSERT INTO fav.user (uid,cid,rid,ts,aid) VALUES ($1) ON CONFLICT (uid, cid, rid, ts) DO NOTHING RETURNING id").await.unwrap() });
 
-  t3::init();
+  loginit::init();
 
   let mut router = Router::new();
 

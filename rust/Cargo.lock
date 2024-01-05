@@ -136,6 +136,7 @@ dependencies = [
  "axum",
  "const-str",
  "exepid",
+ "loginit",
  "r",
  "rand",
  "re",
@@ -1883,15 +1884,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "itertools"
-version = "0.11.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b1c173a5686ce8bfa551b3563d0c2170bf24ca44da99c7ca4bfdab5418c3fe57"
-dependencies = [
- "either",
-]
-
-[[package]]
 name = "itoa"
 version = "1.0.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2068,9 +2060,9 @@ checksum = "b5e6163cb8c49088c2c36f57875e58ccd8c87c7427f7fbd50ea6710b2f3f2e8f"
 
 [[package]]
 name = "loginit"
-version = "0.1.4"
+version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e05d0c9903aab8079fa7a634d7d8a46ee956d80aab150b98b7b5e36a9060df5f"
+checksum = "331f937b8516c4586ade7746efeb4ad445254659bcc86588719a3eedf1f33349"
 dependencies = [
  "atty",
  "tracing-subscriber",
@@ -2955,7 +2947,7 @@ checksum = "c55e02e35260070b6f716a2423c2ff1c3bb1642ddca6f99e1f26d06268a0e2d2"
 dependencies = [
  "bytes",
  "heck",
- "itertools 0.11.0",
+ "itertools",
  "log",
  "multimap",
  "once_cell",
@@ -2976,7 +2968,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "efb6c9a1dd1def8e2124d17e83a20af56f1570d6c2d2bd9e266ccb768df3840e"
 dependencies = [
  "anyhow",
- "itertools 0.11.0",
+ "itertools",
  "proc-macro2",
  "quote",
  "syn 2.0.48",
@@ -3980,9 +3972,9 @@ dependencies = [
 
 [[package]]
 name = "t3"
-version = "0.1.1"
+version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dd0bbb1a55c6400522260dc43d24af0edd358e384882709af990452203dabc9e"
+checksum = "b3cc8e36b729c0a47e201120e8b826a303af0bae58410760fcf969e9e098bc17"
 dependencies = [
  "anyhow",
  "axum",
@@ -3990,7 +3982,6 @@ dependencies = [
  "coarsetime",
  "futures",
  "genv",
- "loginit",
  "once_cell",
  "re",
  "thiserror",
@@ -4012,7 +4003,7 @@ dependencies = [
  "arc-swap",
  "either",
  "globset",
- "itertools 0.10.5",
+ "itertools",
  "logos",
  "once_cell",
  "rowan",
