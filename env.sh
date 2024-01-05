@@ -14,5 +14,5 @@ _init() {
 cd $conf/docker
 _init db host smtp r
 cd $conf/srv
-_init warn
+_init warn ipv6_proxy port
 unset -f _init
