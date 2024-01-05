@@ -1,7 +1,6 @@
 use axum::http::header::{HeaderMap, ORIGIN};
+use re::Result;
 use thiserror::Error;
-
-use crate::Result;
 
 #[derive(Error, Debug)]
 pub enum Error {

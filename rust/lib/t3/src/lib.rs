@@ -34,7 +34,7 @@ macro_rules! api {
 pub use log::init;
 pub use srv::srv;
 
-pub type Response = Result<axum::response::Response>;
+pub type Response = re::Result<axum::response::Response>;
 
 pub type E<T> = Extension<T>;
 
