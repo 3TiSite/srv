@@ -8,8 +8,8 @@ pub enum Error {
 
 pub fn host_is_bind<T>(id: Option<T>) -> re::Result<T> {
   if id.is_none() {
-    t3::err(
-      t3::StatusCode::UNPROCESSABLE_ENTITY,
+    re::err(
+      re::StatusCode::UNPROCESSABLE_ENTITY,
       Error::HostNoBind.to_string(),
     )?;
   }
