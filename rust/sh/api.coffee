@@ -90,18 +90,14 @@ args_body = (def, code)=>
     end = code.indexOf '\n}', begin
     if ~end
       code = code.slice(begin,end)
-      for s from [
-        '::aerr::Result<'
-        't3::Result<'
-      ]
-        s = '-> '+s
-        p = code.indexOf(s)
-        if ~p
-          args = code.slice(0,p)
-          args = args.slice(0,args.lastIndexOf(')'))
-          body = code.slice(p+s.length)
-          body = body.slice(body.indexOf('{')+1)
-          return [args, body]
+      s = '-> ::re::Result<'
+      p = code.indexOf(s)
+      if ~p
+        args = code.slice(0,p)
+        args = args.slice(0,args.lastIndexOf(')'))
+        body = code.slice(p+s.length)
+        body = body.slice(body.indexOf('{')+1)
+        return [args, body]
   return
 
 api = (url, code)=>
