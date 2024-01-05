@@ -4,7 +4,7 @@ use axum::{error_handling::HandleErrorLayer, http::StatusCode, BoxError, Router}
 use coarsetime::Duration;
 use tower::ServiceBuilder;
 
-genv::def!(PORT:u16|8850);
+genv::def!(PORT:u16|5123);
 
 const TIMEOUT: u64 = 600;
 
