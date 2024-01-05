@@ -254,7 +254,7 @@ export default main = (dir)=>
 
   write(
     join dir, 'api.nt'
-    '# GEN BY url.coffee . DON\'T EDIT !\n'+dumps(
+    '# GEN BY srv/rust/sh/api.coffee . DON\'T EDIT !\n'+dumps(
       api_nt
     ).trim()+'\n'
   )
