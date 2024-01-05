@@ -1,10 +1,10 @@
 #!/usr/bin/env coffee
 
-> ./api
-  ./conf > ROOT PWD
+> ./conf > ROOT PWD
   ./i18n
   ./rm_target_if_rustc_ver_change.coffee:rmTarget
   @3-/split
+  @3-/apint
   @3-/nt/load.js
   @3-/read
   @3-/write
@@ -61,7 +61,7 @@ gen = (name)=>
   if not existsSync lib_rs
     return
 
-  r = await api dir
+  r = await apint dir
   MOD_LI.push [name, r[0], cargo.package.name]
   IMPORT.push r[1]+'\n'
   POST_LI.push ...r[2]
