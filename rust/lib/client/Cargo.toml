@@ -6,7 +6,6 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
 anyhow = "1.0.79"
-t3 = { path = "../t3" }
 axum = "0.7.3"
 user = { path = "../user" }
 tracing = "0.1.40"
@@ -15,3 +14,4 @@ intbin = "0.1.2"
 set_header = "0.1.4"
 apart = "0.1.5"
 re = "0.1.5"
+t3 = "0.1.1"

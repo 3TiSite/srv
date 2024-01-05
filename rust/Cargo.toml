@@ -2,7 +2,6 @@
 members = [
   "api/.url",
   "api",
-  "lib/t3",
   "lib/arg",
   "lib/xerr",
   "lib/tp",
