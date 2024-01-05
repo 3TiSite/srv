@@ -18,10 +18,6 @@ pub use tracing;
 mod log;
 mod srv;
 
-pub fn same<T>(t: T) -> T {
-  t
-}
-
 #[macro_export]
 macro_rules! api {
   () => {

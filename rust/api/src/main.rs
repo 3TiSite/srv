@@ -49,7 +49,7 @@ async fn main() -> anyhow::Result<()> {
     ($method:ident $wrap:ident $url:expr, $func:ident) => {
         router = router.route(
           const_str::concat!('/', $url),
-          routing::$method(t3::$wrap(url::$func::$method)),
+          routing::$method(re::$wrap(url::$func::$method)),
         )
     };
   }
