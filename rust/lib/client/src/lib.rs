@@ -28,19 +28,19 @@ impl Deref for Client {
 #[macro_export]
 macro_rules! unauthorized {
   () => {
-    t3::err(StatusCode::UNAUTHORIZED, "".to_owned())
+    re::err(StatusCode::UNAUTHORIZED, "".to_owned())
   };
 }
 
 impl Client {
-  pub async fn uid_logined(&self, uid: u64) -> Result<(), t3::Err> {
+  pub async fn uid_logined(&self, uid: u64) -> Result<(), re::Err> {
     if uid > user::UID_STATE_UNSET && self.is_login(uid).await? {
       return Ok(());
     }
     unauthorized!()
   }
 
-  pub async fn logined(&self) -> Result<u64, t3::Err> {
+  pub async fn logined(&self) -> Result<u64, re::Err> {
     if let Some(id) = self.uid().await? {
       return Ok(id);
     }
