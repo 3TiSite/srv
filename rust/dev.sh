@@ -18,7 +18,7 @@ cargo build
 
 echo "cargo exit with $?"
 
-exec watchexec \
+exec direnv exec . watchexec \
   --shell=none \
   --project-origin . \
   -w . \
