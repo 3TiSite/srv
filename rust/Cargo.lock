@@ -1796,9 +1796,9 @@ dependencies = [
 
 [[package]]
 name = "idns"
-version = "0.1.8"
+version = "0.1.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7daaaceb3c011a310dd866c8afe330adba2106a3288aac918466a725b0f72dc3"
+checksum = "d4214bced9bb4ea4efda74c3cc0852e11bfde382da8515453221516137422d7a"
 dependencies = [
  "hickory-proto",
  "hickory-resolver",
@@ -5278,9 +5278,9 @@ checksum = "ec7a2a501ed189703dba8b08142f057e887dfc4b2cc4db2d343ac6376ba3e0b9"
 
 [[package]]
 name = "xsmtp"
-version = "0.1.5"
+version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9762abe4af0a026fab3d2aa76163eb5cc210018aaeb478e677e09672e159359d"
+checksum = "0d9c32f25d2b9f408a86f3f51cb4dc8c04e3aab1a544573dd3296804d14956d9"
 dependencies = [
  "anyhow",
  "aok",
