@@ -17,7 +17,7 @@ services:
       - ./mnt/data/oceanbase/obd:/root/.obd
 # - ./init/db:/root/boot/init.d
 #   mc:
-#     container_name: 3ti-mc
+#     container_name: i18n-mc
 #     image: docker.dragonflydb.io/dragonflydb/dragonfly
 #     restart: always
 #     ulimits:
@@ -36,7 +36,7 @@ services:
 #       --proactor_threads=${MC_THREADS}
 #       --maxmemory=${MC_MAXMEMORY}
 #   pg:
-#     container_name: 3ti-pg
+#     container_name: i18n-pg
 #     image: xxai/postgres
 #     volumes:
 #       - ./data/pg:/var/lib/postgresql/data
@@ -70,7 +70,7 @@ services:
 # # -c shared_preload_libraries='pg_cron'
 #   kv:
 #     restart: always
-#     container_name: 3ti-kv
+#     container_name: i18n-kv
 #     mem_limit: 1G
 #     image: apache/kvrocks:nightly
 #     entrypoint: >
