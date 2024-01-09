@@ -264,7 +264,7 @@ dependencies = [
  "const-str",
  "email_address",
  "g",
- "genv 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "genv",
  "intbin 0.1.2",
  "jarg",
  "kfn",
@@ -569,7 +569,7 @@ dependencies = [
  "anyhow",
  "apart",
  "click_captcha",
- "genv 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "genv",
  "intbin 0.1.2",
  "prost",
  "prost-build",
@@ -1287,15 +1287,6 @@ checksum = "85649ca51fd72272d7821adaf274ad91c288277713d9c18820d8499a7ff69e9a"
 dependencies = [
  "typenum",
  "version_check",
-]
-
-[[package]]
-name = "genv"
-version = "0.1.6"
-dependencies = [
- "const-str",
- "static_init",
- "tracing",
 ]
 
 [[package]]
@@ -2359,7 +2350,7 @@ dependencies = [
  "anyhow",
  "chrono",
  "duct",
- "genv 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "genv",
  "m",
  "static_init",
  "sts",
@@ -2460,7 +2451,7 @@ version = "0.1.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ac6eb37994bf22642bfb128c3fa9bc0239b7a4194469f407533a6d14a6c75a93"
 dependencies = [
- "genv 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "genv",
  "mysql_async",
  "static_init",
  "tokio",
@@ -2726,7 +2717,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "client",
- "genv 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "genv",
  "intbin 0.1.2",
  "jarg",
  "m",
@@ -2900,11 +2891,12 @@ checksum = "5b40af805b3121feab8a3c29f04d8ad262fa8e0561883e7653e024ae4479e6de"
 
 [[package]]
 name = "preq"
-version = "0.1.7"
+version = "0.1.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "da71534788da4bf26092eae18f0bbe2cdd621fa91c97c0e74ac426d3d664e907"
 dependencies = [
  "bytes",
- "genv 0.1.6",
- "lazy_static",
+ "genv",
  "preq1",
  "reqwest",
  "static_init",
@@ -2914,10 +2906,12 @@ dependencies = [
 [[package]]
 name = "preq1"
 version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e011775b746be45ae3c4a27430b0884db4e3eba37167d19d20f661b7582717ab"
 dependencies = [
  "bytes",
  "form_urlencoded",
- "genv 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "genv",
  "reqwest",
  "static_init",
  "tracing",
@@ -4028,7 +4022,7 @@ dependencies = [
  "bytes",
  "coarsetime",
  "futures",
- "genv 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "genv",
  "once_cell",
  "re",
  "thiserror",
@@ -4215,7 +4209,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "client",
- "genv 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "genv",
  "intbin 0.1.2",
  "jarg",
  "m",
@@ -4491,7 +4485,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "const-str",
- "genv 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "genv",
  "jarg",
  "lazy_static",
  "md",
@@ -4520,7 +4514,6 @@ dependencies = [
  "const-str",
  "preq",
  "sonic-rs",
- "url 2.5.0",
 ]
 
 [[package]]
@@ -5295,7 +5288,7 @@ checksum = "0d9c32f25d2b9f408a86f3f51cb4dc8c04e3aab1a544573dd3296804d14956d9"
 dependencies = [
  "anyhow",
  "aok",
- "genv 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "genv",
  "idns",
  "mail-builder",
  "mail-send-fork",
