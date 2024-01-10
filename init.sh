@@ -32,5 +32,5 @@ direnv allow
 cd $DIR/dev
 run up
 cd $DIR/rust
-direnv exec . ./sh/cron.coffee
 run init
+direnv exec . ./sh/cron.coffee
