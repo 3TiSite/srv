@@ -4,8 +4,13 @@ DIR=$(realpath $0) && DIR=${DIR%/*}
 cd $DIR
 set -ex
 
-../ops/backup/db/load.coffee
-../ops/backup/db/dump.sh
+e() {
+  direnv exec . $@
+}
+
+e ../ops/backup/db/load.coffee
+e ../ops/backup/db/dump.sh
+
 APT_URL=api/.url
 
 ensure() {
@@ -18,12 +23,7 @@ ensure() {
 
 ensure cargo-expand
 
-run() {
-  for i in $@; do
-    direnv exec . ./sh/$i
-  done
-}
-run gen.coffee
+e ./sh/gen.coffee
 cargo fmt
 
 api_dir=$(realpath $DIR/../../api-proto-js)
@@ -31,5 +31,5 @@ gen=gen.coffee
 if [ -f "$api_dir/$gen" ]; then
   cd $api_dir
   direnv allow
-  direnv exec . ./$gen
+  e ./$gen
 fi
