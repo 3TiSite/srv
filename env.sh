@@ -12,7 +12,7 @@ _init() {
   cd $pwd
 }
 cd $conf/docker
-_init db host smtp r
+_init db host smtp r stripe
 cd $conf/srv
 _init warn port ipv6_proxy
 unset -f _init
