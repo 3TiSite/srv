@@ -5,6 +5,7 @@ cd $DIR
 set -ex
 
 if [ ! -f "mnt/ssl/localhost-key.pem" ]; then
+  mkdir -p mnt/ssl
   cd mnt/ssl
   bun x mkcert localhost
   cd $DIR

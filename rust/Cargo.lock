@@ -1799,9 +1799,9 @@ dependencies = [
 
 [[package]]
 name = "idns"
-version = "0.1.16"
+version = "0.1.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed5b6c57757f7b555fff524ee072b5b2f1a33ab87c26116e7402034b3c06cd04"
+checksum = "f22b95afb4606f3f73fb3227ef259e68c40489ff67034526bafedfff46382232"
 dependencies = [
  "enum_dispatch",
  "futures",
