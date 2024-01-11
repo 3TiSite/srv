@@ -2887,6 +2887,7 @@ name = "pay"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "aok",
  "async-stripe",
  "b62",
  "client",
