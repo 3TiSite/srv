@@ -11,7 +11,7 @@ genv::s!(WARN_MAIL);
 pub async fn logerr(cron_id: u32, dir: String, sh: String, code: i32, msg: &[u8]) -> Result<()> {
   let txt = String::from_utf8_lossy(msg);
   println!("cron_id {cron_id} exit {code}\n{txt}\n");
-  m::exe!(
+  m::e!(
     format!("INSERT INTO cronErr(cron_id,code,msg) VALUES({cron_id},{code}, ?)"),
     msg
   );
@@ -56,7 +56,7 @@ pub async fn run(
       if code == 0 {
         let now = sts::min();
         let begin = if preok == 0 { now } else { preok };
-        m::exe!(format!(
+        m::e!(format!(
           "UPDATE cron SET next={begin}+minute,preok={now} WHERE id={cron_id}"
         ))
       } else {

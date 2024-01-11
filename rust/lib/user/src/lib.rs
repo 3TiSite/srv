@@ -124,7 +124,7 @@ impl ClientUser {
         ua.lang,
         ua.arch,
       );
-      m::exe!(
+      m::e!(
         "SELECT authUidSignIn(?,?,?,?)",
         uid_u64,
         client_id,

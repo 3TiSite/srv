@@ -396,6 +396,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "b62"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "15872522475a1c3f04eb25162e04883030407ba35675bfa847038bb2d884b5e0"
+dependencies = [
+ "base-x",
+]
+
+[[package]]
 name = "backtrace"
 version = "0.3.69"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2603,9 +2612,9 @@ dependencies = [
 
 [[package]]
 name = "mysql_macro"
-version = "0.1.17"
+version = "0.1.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ac6eb37994bf22642bfb128c3fa9bc0239b7a4194469f407533a6d14a6c75a93"
+checksum = "8b2130d89edbd0c0448efa0b94c17e71a9e5385572df1ca4781b7697df2ecb61"
 dependencies = [
  "genv",
  "mysql_async",
@@ -2879,6 +2888,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "async-stripe",
+ "b62",
  "client",
  "genv",
  "intbin 0.1.2",
@@ -4825,7 +4835,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "97fee6b57c6a41524a810daee9286c02d7752c4253064d0b05472833a438f675"
 dependencies = [
  "cfg-if",
- "rand 0.8.5",
+ "rand 0.7.3",
  "static_assertions",
 ]
 
