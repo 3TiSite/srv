@@ -27,7 +27,7 @@ static_init = { version = "1.0.3", features = [
   "parking_lot",
   "parking_lot_core",
 ] }
-xsmtp = "0.1.8"
+xsmtp = "0.1.9"
 
 [profile.release]
 lto = true
