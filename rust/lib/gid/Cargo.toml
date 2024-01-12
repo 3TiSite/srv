@@ -11,7 +11,7 @@ paste = "1.0.14"
 anyhow = "1.0.79"
 trt = "0.1.21"
 tokio = { version = "1.35.1", features = ["parking_lot"] }
-sts = "0.1.15"
+sts = "0.1.16"
 static_init = "1.0.3"
 
 [dev-dependencies]

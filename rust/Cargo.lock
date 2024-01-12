@@ -4185,9 +4185,9 @@ checksum = "73473c0e59e6d5812c5dfe2a064a6444949f089e20eec9a2e5506596494e4623"
 
 [[package]]
 name = "sts"
-version = "0.1.15"
+version = "0.1.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "73c5548518dd1510d809d72888531c04dd2323af6cf04702d3d2324b5770bcfc"
+checksum = "629a56191af48dca52953f549033ec0ac5f4b2b87f95a6522616a7084ed75b32"
 dependencies = [
  "chrono",
  "coarsetime",
