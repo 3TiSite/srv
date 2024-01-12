@@ -2910,6 +2910,7 @@ dependencies = [
  "trt",
  "ub64",
  "vb",
+ "xstr",
 ]
 
 [[package]]
