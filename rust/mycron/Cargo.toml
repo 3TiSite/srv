@@ -20,7 +20,7 @@ tokio = { version = "1.35.1", features = [
   "sync",
 ] }
 chrono = "0.4.31"
-sts = "0.1.14"
+sts = "0.1.15"
 genv = "0.1.6"
 static_init = { version = "1.0.3", features = [
   "lock_statistics",
