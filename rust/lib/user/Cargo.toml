@@ -21,7 +21,7 @@ const-str = "0.5.6"
 ip = { path = "../ip", features = ["http"] }
 ua = { path = "../ua" }
 sonic-rs = "0.3.2"
-sts = "0.1.16"
+sts = "0.1.17"
 static_init = { version = "1.0.3", features = [
   "lock_statistics",
   "parking_lot",
