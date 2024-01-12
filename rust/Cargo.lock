@@ -2904,6 +2904,7 @@ dependencies = [
  "static_init",
  "sts",
  "t3",
+ "tracing",
  "trt",
  "ub64",
  "vb",
