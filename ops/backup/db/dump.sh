@@ -5,7 +5,7 @@ cd $DIR
 export MYSQL_PWD=$MYSQL_PWD
 set -ex
 
-mysqldump \
+direnv exec . mysqldump \
   --skip-set-charset \
   --events \
   --compress \
