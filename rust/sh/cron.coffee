@@ -15,10 +15,10 @@ load_nt = (dir, nt)=>
   vli = []
 
   for [sh, minute_timeout] from Object.entries nt
-    minute_timeout = minute_timeout.split(' ').map (i)=>Number.parseInt(i)
-    console.log dir,sh,minute_timeout
+    [minute, timeout] = minute_timeout.split(' ').map (i)=>Number.parseInt(i)
+    console.log dir,sh,'minute',minute,'timeout',timeout
     pli.push '(?,?,?,?)'
-    vli.push dir, sh, ...minute_timeout
+    vli.push dir, sh, minute, timeout
 
   if not vli.length
     return
