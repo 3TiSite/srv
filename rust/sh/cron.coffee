@@ -19,7 +19,7 @@ load_nt = (dir, nt)=>
     [minute, timeout] = minute_timeout.split(' ').map (i)=>Number.parseInt(i)
     console.log dir,sh,'minute',minute,'timeout',timeout
     cd join(MOD, dir, 'cron')
-    await $"direnv exec . ./#{sh}"
+    await $"timeout #{timeout} direnv exec . ./#{sh}"
     pli.push '(?,?,?,?)'
     vli.push dir, sh, minute, timeout
 
