@@ -1248,9 +1248,9 @@ dependencies = [
 
 [[package]]
 name = "fred"
-version = "7.1.1"
+version = "7.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "68a3b71b668749c2e44051378ff2e3fb1c09daba1f12e27da2a8e4b7522036a0"
+checksum = "b99c2b48934cd02a81032dd7428b7ae831a27794275bc94eba367418db8a9e55"
 dependencies = [
  "arc-swap",
  "async-trait",
@@ -2612,12 +2612,13 @@ dependencies = [
 
 [[package]]
 name = "mysql_macro"
-version = "0.1.19"
+version = "0.1.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1493668d3e3c07344ecf01e5108fd3e4f3434eca0d3b86b7f9ad37adffc606d5"
+checksum = "81ee55b2b99c7ffe6663e74bf0d680d4680c56a0b94f445578fe4746a1d4a6b3"
 dependencies = [
  "genv",
  "mysql_async",
+ "rustc-hex",
  "static_init",
  "tokio",
  "trt",
@@ -3660,6 +3661,12 @@ name = "rustc-hash"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "08d43f7aa6b08d49f382cde6a7982047c3426db949b1424bc4b7ec9ae12c6ce2"
+
+[[package]]
+name = "rustc-hex"
+version = "2.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3e75f6a532d0fd9f7f13144f392b6ad56a32696bfcd9c78f797f16bbb6f072d6"
 
 [[package]]
 name = "rustc_version"
