@@ -2763,9 +2763,9 @@ dependencies = [
 
 [[package]]
 name = "mysql_macro"
-version = "0.1.21"
+version = "0.1.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "23d666aba0d69059c7455a0b4f0a0095a11d09d0f1df3ba5c3c24041015b8584"
+checksum = "a8f00af36e0158451a7d28deae6aea5e1636b73e0b395996380b366f40077f0d"
 dependencies = [
  "genv",
  "mysql_async",
@@ -5889,9 +5889,9 @@ dependencies = [
 
 [[package]]
 name = "xstr"
-version = "0.1.9"
+version = "0.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3e2633e51ac29e7198ac7556cd753a5f7bd92a171290629ea0ab111cda3e28f2"
+checksum = "b3b1d2f1c728d19b3c2c63a4f6b2e1241b92b3e24d71ce4908854b53da0740b5"
 
 [[package]]
 name = "xtld"
