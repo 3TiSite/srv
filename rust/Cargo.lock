@@ -4440,9 +4440,9 @@ checksum = "73473c0e59e6d5812c5dfe2a064a6444949f089e20eec9a2e5506596494e4623"
 
 [[package]]
 name = "sts"
-version = "0.1.17"
+version = "0.1.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ce71cad669e4a8694a4798f0383f9e77d3c2927f18557a366416d886331d54bc"
+checksum = "c8254aac263d99a430a9fb6c67ef45786a046d59ba61dbf9970c181624c5e0b1"
 dependencies = [
  "chrono",
  "coarsetime",
@@ -5122,7 +5122,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "97fee6b57c6a41524a810daee9286c02d7752c4253064d0b05472833a438f675"
 dependencies = [
  "cfg-if",
- "rand 0.7.3",
+ "rand 0.8.5",
  "static_assertions",
 ]
 
