@@ -21,8 +21,9 @@ fn ts2gmt(ts: u64) -> String {
 }
 
 pub fn cookie_set(host: &str, client_id: u64) -> [String; 1] {
-  let now = sts::sec();
-  let day = day10!(now);
+  // let now = sts::sec();
+  // let day = day10!(now);
+  let day = day10();
   let t = &vb::e([day, client_id])[..];
   let token = [&hash64(&[sk(), t].concat()).to_le_bytes()[..], t].concat();
   let i = cookiestr::e(token);
@@ -30,10 +31,8 @@ pub fn cookie_set(host: &str, client_id: u64) -> [String; 1] {
 
   // 如果你只设置了max-age，那么在Safari中，这个cookie将会作为一个Session Cookie（当你关闭浏览器时它会被删除）
 
-  let expire = ts2gmt(now + max_age);
-
-  let age = format!(
-    ";expires={expire};max-age={max_age};domain={host};path=/;Partitioned;Secure;SameSite=Lax"
-  );
+  // let expire = ts2gmt(now + max_age);
+  // expires={expire};
+  let age = format!(";max-age={max_age};domain={host};path=/;Partitioned;Secure;SameSite=Lax");
   [format!("I={i}{age};HttpOnly")]
 }
