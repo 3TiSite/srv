@@ -49,8 +49,8 @@ impl Client {
 }
 
 pub async fn client(parts: &mut Parts) -> Result<Client, anyhow::Error> {
-  let host = parts.headers.get(HOST);
-  if let Some(Ok(host)) = host.map(|i| i.to_str()) {
+  let host = t3::origin_tld(&parts.headers);
+  if let Some(host) = host {
     let cookie = if let Some(Ok(c)) = parts.headers.get(COOKIE).map(|i| i.to_str()) {
       Some(c)
     } else {
