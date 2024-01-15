@@ -29,3 +29,4 @@ static_init = { version = "1.0.3", features = [
 ] }
 trt = "0.1.24"
 xhash = "0.1.3"
+chrono = "0.4.31"
