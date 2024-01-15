@@ -27,5 +27,5 @@ static_init = { version = "1.0.3", features = [
   "parking_lot",
   "parking_lot_core"
 ] }
-trt = "0.1.21"
+trt = "0.1.24"
 xhash = "0.1.3"

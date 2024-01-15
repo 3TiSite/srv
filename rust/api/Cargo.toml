@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
 anyhow = "1.0.79"
-axum = "0.7.3"
+axum = "0.7.4"
 rand = "0.8.5"
 tokio = { version = "1.35.1", features = [
   "time",
@@ -15,7 +15,7 @@ tokio = { version = "1.35.1", features = [
   "rt",
 ] }
 tracing = "0.1.40"
-trt = "0.1.21"
+trt = "0.1.24"
 r = { path = "../lib/r" }
 exepid = { path = "../lib/exepid" }
 const-str = "0.5.6"
